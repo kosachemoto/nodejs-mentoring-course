@@ -1,0 +1,14 @@
+{
+  "name": "nodejs-app",
+  "version": "1.0.0",
+  "description": "just test app for mentoring program",
+  "main": "index.js",
+  "author": "Nikita Kosachev",
+  "license": "MIT",
+  "scripts": {
+    "watch": "nodemon"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
