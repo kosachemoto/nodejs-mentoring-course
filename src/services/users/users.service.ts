@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { UsersServiceTypes } from './users.types';
+import { UsersServiceTypes } from './users.service.types';
 
 export class UsersService implements UsersServiceTypes.Users {
     users: UsersServiceTypes.User[] = [];
