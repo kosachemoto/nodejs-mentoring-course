@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import { UsersServiceTypes } from './users.service.types';
 
-export class UsersService implements UsersServiceTypes.Users {
+export class UsersService implements UsersServiceTypes.Service {
     users: UsersServiceTypes.User[] = [];
 
     createUser(data: UsersServiceTypes.SaveData) {

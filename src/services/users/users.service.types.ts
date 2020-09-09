@@ -11,7 +11,7 @@ export namespace UsersServiceTypes {
 
     export type UpdateData = Pick<User, 'id'> & Partial<Omit<User, 'id' | 'isDeleted'>>;
 
-    export interface Users {
+    export interface Service {
         users: User[];
         createUser: (data: SaveData) => void;
         getUser: (id: string) => User;

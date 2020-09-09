@@ -10,7 +10,7 @@ const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
-app.use('/', userRouter);
+app.use('/users', userRouter);
 
 app.listen(port, () => {
     console.log('haha we are listening', port);
