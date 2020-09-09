@@ -1,10 +1,17 @@
-const taskName = process.argv[2];
+import express from 'express';
+import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import { userRouter } from './src/routes/users';
 
-import(`./src/${taskName}`)
-    .then((module) => {
-        module.default();
-    })
-    .catch((error) => {
-        console.error(error.code);
-        console.log('try "npm start <task-name>')
-    });
+dotenv.config();
+
+const app = express();
+const port = process.env.PORT;
+
+app.use(bodyParser.json());
+
+app.use('/', userRouter);
+
+app.listen(port, () => {
+    console.log('haha we are listening', port);
+})
