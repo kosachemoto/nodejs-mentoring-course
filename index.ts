@@ -14,4 +14,4 @@ app.use('/users', userRouter);
 
 app.listen(port, () => {
     console.log('haha we are listening', port);
-})
+});

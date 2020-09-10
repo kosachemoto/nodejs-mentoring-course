@@ -20,4 +20,4 @@ export namespace UsersServiceTypes {
         deleteUser: (id: string) => void;
         getAutoSuggestUsers: (loginSubstring: string, limit?: number) => User[];
     };
-}
+};
