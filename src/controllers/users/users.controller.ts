@@ -26,8 +26,16 @@ export class UsersController implements UsersControllerTypes.Controller {
         res.send(user);
     };
     
-    getUsers = (req: Request, res: Response) => {
-        const users = this.usersService.getUsers();
+    getUsers = (req: Request<{}, {}, {}, UsersControllerTypes.GetUsersQuery>, res: Response) => {
+        const {
+            loginSubstring,
+            limit,
+        } = req.query;
+        if (loginSubstring) {
+
+        }
+
+        const users = loginSubstring ? this.usersService.getAutoSuggestUsers(loginSubstring, limit) : this.usersService.getUsers();
 
         res.send(users);
     };

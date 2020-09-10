@@ -18,5 +18,6 @@ export namespace UsersServiceTypes {
         getUsers: () => User[];
         updateUser: (data: UpdateData) => void;
         deleteUser: (id: string) => void;
+        getAutoSuggestUsers: (loginSubstring: string, limit?: number) => User[];
     };
 }

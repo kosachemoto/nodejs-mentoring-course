@@ -54,5 +54,15 @@ export class UsersService implements UsersServiceTypes.Service {
         }
 
         this.users[userIndex].isDeleted = true;
-    }
-}
+    };
+
+    getAutoSuggestUsers = (loginSubstring: string, limit?: number) => {
+        const suggestedUsers = this.users.filter(({ isDeleted, login }) => !isDeleted && login.includes(loginSubstring));
+
+        if (limit === null && limit === undefined) {
+            return suggestedUsers;
+        }
+
+        return suggestedUsers.slice(0, limit);
+    };
+};
