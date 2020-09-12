@@ -6,13 +6,9 @@ import {
 import { UsersControllerTypes } from './users.controller.types';
 
 export class UsersController implements UsersControllerTypes.Controller {
-    usersService: UsersServiceTypes.Service;
-    
-    constructor() {
-        this.usersService = new UsersService();
-    };
+    usersService: UsersServiceTypes.Service = new UsersService();
 
-    createUser = (req: Request<{}, {}, UsersServiceTypes.SaveData>, res: Response) => {
+    createUser = (req: Request<{}, {}, UsersServiceTypes.CreateData>, res: Response) => {
         this.usersService.createUser({
             ...req.body,
         });
@@ -21,9 +17,15 @@ export class UsersController implements UsersControllerTypes.Controller {
     };
     
     getUser = (req: Request<UsersControllerTypes.GetUserProps>, res: Response) => {
-        const user = this.usersService.getUser(req.params.id); 
-        
-        res.send(user);
+        try {
+            const user = this.usersService.getUser(req.params.id || ''); 
+            
+            res.send(user);
+        } catch(error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        };
     };
     
     getUsers = (req: Request<{}, {}, {}, UsersControllerTypes.GetUsersQuery>, res: Response) => {
@@ -31,22 +33,31 @@ export class UsersController implements UsersControllerTypes.Controller {
             loginSubstring,
             limit,
         } = req.query;
+
         if (loginSubstring) {
+            const users = this.usersService.getAutoSuggestUsers(loginSubstring, limit);
 
-        }
+            res.send(users);
+        } else {
+            const users = this.usersService.getUsers();
 
-        const users = loginSubstring ? this.usersService.getAutoSuggestUsers(loginSubstring, limit) : this.usersService.getUsers();
-
-        res.send(users);
+            res.send(limit ? users.splice(0, limit) : users);
+        };
     };
     
     updateUser = (req: Request<UsersControllerTypes.UpdateUserProps, {}, UsersControllerTypes.UpdateUserBody>, res: Response) => {
-        const id = req.params.id;
+        const id = req.params.id || '';
     
-        this.usersService.updateUser({
-            id,
-            ...req.body,
-        });
+        try {
+            this.usersService.updateUser({
+                id,
+                ...req.body,
+            });
+        } catch(error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        };
 
         const updatedUser = this.usersService.getUser(id);
         
@@ -54,9 +65,15 @@ export class UsersController implements UsersControllerTypes.Controller {
     };
     
     deleteUser = (req: Request<UsersControllerTypes.DeleteUserProps>, res: Response) => {
-        const id = req.params.id;
+        const id = req.params.id || '';
     
-        this.usersService.deleteUser(id);
+        try {
+            this.usersService.deleteUser(id);
+        } catch(error) {
+            res.status(400).send({
+                message: error.message,
+            });
+        };
 
         res.status(200).end();
     };

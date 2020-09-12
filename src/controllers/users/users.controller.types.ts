@@ -1,27 +1,29 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { UsersServiceTypes } from '../../services/users';
 
 export namespace UsersControllerTypes {
-    export type GetUserProps = Pick<UsersServiceTypes.User, 'id'>;
+    export type GetUserProps = Partial<Pick<UsersServiceTypes.User, 'id'>>;
 
     export type GetUsersQuery = {
         loginSubstring?: string;
         limit?: number;
     };
 
-    export type UpdateUserProps = Pick<UsersServiceTypes.User, 'id'>;
+    export type UpdateUserProps = Partial<Pick<UsersServiceTypes.User, 'id'>>;
 
     export type UpdateUserBody = Partial<Omit<UsersServiceTypes.User, 'id'>>;
 
-    export type DeleteUserProps = Pick<UsersServiceTypes.User, 'id'>;
+    export type DeleteUserProps = Partial<Pick<UsersServiceTypes.User, 'id'>>;
 
-    export interface Controller {
+    export interface ControllerMethods {
+        createUser: (req: Request<{}, {}, UsersServiceTypes.CreateData>, res: Response, next: NextFunction) => void;
+        getUser: (req: Request<UsersControllerTypes.GetUserProps>, res: Response, next: NextFunction) => void;
+        getUsers: (req: Request<{}, {}, {}, UsersControllerTypes.GetUsersQuery>, res: Response, next: NextFunction) => void;
+        updateUser: (req: Request<UsersControllerTypes.UpdateUserProps, {}, UsersControllerTypes.UpdateUserBody>, res: Response, next: NextFunction) => void;
+        deleteUser: (req: Request<UsersControllerTypes.DeleteUserProps>, res: Response, next: NextFunction) => void;
+    };
+
+    export interface Controller extends ControllerMethods {
         usersService: UsersServiceTypes.Service;
-
-        createUser: (req: Request<{}, {}, UsersServiceTypes.SaveData>, res: Response) => void;
-        getUser: (req: Request<UsersControllerTypes.GetUserProps>, res: Response) => void;
-        getUsers: (req: Request<{}, {}, {}, UsersControllerTypes.GetUsersQuery>, res: Response) => void;
-        updateUser: (req: Request<UsersControllerTypes.UpdateUserProps, {}, UsersControllerTypes.UpdateUserBody>, res: Response) => void;
-        deleteUser: (req: Request<UsersControllerTypes.DeleteUserProps>, res: Response) => void;
     };
 };
