@@ -1,17 +1,28 @@
 import express from 'express';
 import { UsersController } from '../../controllers/users';
+import { UsersValidation } from '../../validations/users';
 
 const userRouter = express.Router();
+const usersValidation = new UsersValidation();
 const usersController = new UsersController();
 
-userRouter.post('/', usersController.createUser);
+userRouter.route('/')
+    .post(
+        usersValidation.createUser,
+        usersController.createUser)
+    .get(
+        usersValidation.getUsers,
+        usersController.getUsers)
 
-userRouter.get('/', usersController.getUsers);
-
-userRouter.get('/:id', usersController.getUser);
-
-userRouter.put('/:id', usersController.updateUser);
-
-userRouter.delete('/:id', usersController.deleteUser);
+userRouter.route('/:id')
+    .get(
+        usersValidation.getUser,
+        usersController.getUser)
+    .put(
+        usersValidation.updateUser,
+        usersController.updateUser)
+    .delete(
+        usersValidation.deleteUser,
+        usersController.deleteUser);
 
 export { userRouter };

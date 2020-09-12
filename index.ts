@@ -8,8 +8,9 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT;
 
-app.use(bodyParser.json());
+app.set('case sensitive routing', true);
 
+app.use(bodyParser.json());
 app.use('/users', userRouter);
 
 app.listen(port, () => {
