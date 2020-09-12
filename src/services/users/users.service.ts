@@ -4,7 +4,7 @@ import { UsersServiceTypes } from './users.service.types';
 export class UsersService implements UsersServiceTypes.Service {
     users: UsersServiceTypes.User[] = [];
 
-    createUser(data: UsersServiceTypes.SaveData) {
+    createUser(data: UsersServiceTypes.CreateData) {
         const newUser: UsersServiceTypes.User = {
             ...data,
             id: v4(),
@@ -12,21 +12,21 @@ export class UsersService implements UsersServiceTypes.Service {
         };
 
         this.users.push(newUser);
-    }
+    };
 
     getUser(id: string) {
         const user = this.users.find((user) => user.id === id && !user.isDeleted);
 
         if (user === undefined) {
             throw(new Error(`User with { id: \"${id}\" } doesn't exist.`));
-        }
+        };
 
-        return user;
-    }
+        return {...user};
+    };
 
     getUsers() {
-        return this.users;
-    }
+        return [...this.users];
+    };
 
     updateUser(data: UsersServiceTypes.UpdateData) {
         const {
@@ -38,12 +38,12 @@ export class UsersService implements UsersServiceTypes.Service {
 
         if (userIndex === undefined) {
             throw(new Error(`User with { id: \"${id}\" } doesn't exist.`));
-        }
+        };
 
         this.users[userIndex] = {
             ...this.users[userIndex],
             ...restData,
-        }
+        };
     };
 
     deleteUser(id: string) {
@@ -51,17 +51,17 @@ export class UsersService implements UsersServiceTypes.Service {
 
         if (userIndex === undefined) {
             throw(new Error(`User with { id: \"${id}\" } doesn't exist.`));
-        }
+        };
 
         this.users[userIndex].isDeleted = true;
     };
 
-    getAutoSuggestUsers = (loginSubstring: string, limit?: number) => {
+    getAutoSuggestUsers(loginSubstring: string, limit?: number) {
         const suggestedUsers = this.users.filter(({ isDeleted, login }) => !isDeleted && login.includes(loginSubstring));
 
         if (limit === null && limit === undefined) {
             return suggestedUsers;
-        }
+        };
 
         return suggestedUsers.slice(0, limit);
     };

@@ -7,17 +7,20 @@ export namespace UsersServiceTypes {
         isDeleted: boolean;
     }
 
-    export type SaveData = Omit<User, 'id' | 'isDeleted'>;
+    export type CreateData = Omit<User, 'id' | 'isDeleted'>;
 
     export type UpdateData = Pick<User, 'id'> & Partial<Omit<User, 'id' | 'isDeleted'>>;
 
-    export interface Service {
-        users: User[];
-        createUser: (data: SaveData) => void;
+    export interface ServiceMethods {
+        createUser: (data: CreateData) => void;
         getUser: (id: string) => User;
         getUsers: () => User[];
         updateUser: (data: UpdateData) => void;
         deleteUser: (id: string) => void;
         getAutoSuggestUsers: (loginSubstring: string, limit?: number) => User[];
+    };
+
+    export interface Service extends ServiceMethods {
+        users: User[];
     };
 };
