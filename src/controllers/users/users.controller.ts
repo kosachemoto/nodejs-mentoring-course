@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
-import {
-    UsersService,
-    UsersServiceTypes
-} from '../../services/users';
+import { UsersServiceTypes } from '../../services/users';
 import { UsersControllerTypes } from './users.controller.types';
 
 export class UsersController implements UsersControllerTypes.Controller {
-    usersService: UsersServiceTypes.Service = new UsersService();
+    usersService: UsersServiceTypes.Service;
+
+    constructor(usersService: UsersServiceTypes.Service) {
+        this.usersService = usersService;
+    };
 
     createUser = (req: Request<{}, {}, UsersServiceTypes.CreateData>, res: Response) => {
         this.usersService.createUser({

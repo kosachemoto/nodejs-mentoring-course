@@ -1,10 +1,14 @@
 import express from 'express';
+import { UsersService } from '../../services/users';
+import { UsersValidation } from '../../validation/users';
 import { UsersController } from '../../controllers/users';
-import { UsersValidation } from '../../validations/users';
+import { usersValidationSchema } from '../../validation-schemas/users';
 
 const userRouter = express.Router();
-const usersValidation = new UsersValidation();
-const usersController = new UsersController();
+
+const usersService = new UsersService();
+const usersValidation = new UsersValidation(usersValidationSchema);
+const usersController = new UsersController(usersService);
 
 userRouter.route('/')
     .post(

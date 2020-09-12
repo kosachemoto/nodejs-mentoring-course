@@ -3,16 +3,17 @@ import { Request, Response, NextFunction } from 'express';
 import { UsersValidationTypes } from './users.validation.types';
 import { UsersControllerTypes } from '../../controllers/users';
 import { UsersServiceTypes } from '../../services/users';
+import { UsersValidationSchemaTypes } from '../../validation-schemas/users';
 
 export class UsersValidation implements UsersValidationTypes.Validation {
-    createUser(req: Request<{}, {}, UsersServiceTypes.CreateData>, res: Response, next: NextFunction) {
-        const schema = Joi.object({
-            login: Joi.string().alphanum().min(3).required(),
-            password: Joi.string().alphanum().min(3).required(),
-            age: Joi.number().min(4).max(400).required(),
-        });
+    schema: UsersValidationSchemaTypes.Schema;
 
-        const { error } = schema.validate(req.body, { abortEarly: false })
+    constructor(schema: UsersValidationSchemaTypes.Schema) {
+        this.schema = schema;
+    };
+
+    createUser(req: Request<{}, {}, UsersServiceTypes.CreateData>, res: Response, next: NextFunction) {
+        const { error } = this.schema.createUser.validate(req.body, { abortEarly: false })
 
         if (!error) {
             next();
@@ -22,11 +23,7 @@ export class UsersValidation implements UsersValidationTypes.Validation {
     };
 
     getUser(req: Request<UsersControllerTypes.GetUserProps>, res: Response, next: NextFunction) {
-        const schema = Joi.object().keys({
-            id: Joi.string().required(),
-        });
-
-        const { error } = schema.validate(req.params);
+        const { error } = this.schema.getUser.validate(req.params);
 
         if (!error) {
             next();
@@ -36,12 +33,7 @@ export class UsersValidation implements UsersValidationTypes.Validation {
     };
 
     getUsers(req: Request<{}, {}, {}, UsersControllerTypes.GetUsersQuery>, res: Response, next: NextFunction) {
-        const schema = Joi.object().keys({
-            loginSubstring: Joi.string(),
-            limit: Joi.string()
-        });
-
-        const { error } = schema.validate(req.query);
+        const { error } = this.schema.getUsers.validate(req.query);
 
         if (!error) {
             next();
@@ -53,14 +45,7 @@ export class UsersValidation implements UsersValidationTypes.Validation {
     };
 
     updateUser(req: Request<UsersControllerTypes.UpdateUserProps, {}, UsersControllerTypes.UpdateUserBody>, res: Response, next: NextFunction) {
-        const schema = Joi.object().keys({
-            id: Joi.string().required(),
-            login: Joi.string().min(3).required(),
-            password: Joi.string().min(3).required(),
-            age: Joi.number().required(),
-        });
-
-        const { error } = schema.validate({
+        const { error } = this.schema.updateUser.validate({
             ...req.params,
             ...req.body,
         });
@@ -73,11 +58,7 @@ export class UsersValidation implements UsersValidationTypes.Validation {
     };
 
     deleteUser(req: Request<UsersControllerTypes.DeleteUserProps>, res: Response, next: NextFunction) {
-        const schema = Joi.object().keys({
-            id: Joi.string().required(),
-        });
-
-        const { error } = schema.validate(req.params);
+        const { error } = this.schema.deleteUser.validate(req.params);
 
         if (!error) {
             next();

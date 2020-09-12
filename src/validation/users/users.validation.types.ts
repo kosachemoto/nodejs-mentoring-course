@@ -1,5 +1,6 @@
 import { UsersControllerTypes } from '../../controllers/users';
 import { UsersServiceTypes } from '../../services/users';
+import { UsersValidationSchemaTypes } from '../../validation-schemas/users';
 
 export namespace UsersValidationTypes {
     export type CreateUserSchema = UsersServiceTypes.CreateData;
@@ -23,6 +24,6 @@ export namespace UsersValidationTypes {
     };
 
     export interface Validation extends ValidationMethods {
-
-    }
+        schema: UsersValidationSchemaTypes.Schema;
+    };
 };
