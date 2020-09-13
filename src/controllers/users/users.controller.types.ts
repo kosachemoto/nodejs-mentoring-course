@@ -16,14 +16,14 @@ export namespace UsersControllerTypes {
     export type DeleteUserProps = Partial<Pick<UsersServiceTypes.User, 'id'>>;
 
     export interface ControllerMethods {
-        createUser: (req: Request<{}, {}, UsersServiceTypes.CreateData>, res: Response, next: NextFunction) => void;
+        createUser: (req: Request<Record<string, unknown>, Record<string, unknown>, UsersServiceTypes.CreateData>, res: Response, next: NextFunction) => void;
         getUser: (req: Request<UsersControllerTypes.GetUserProps>, res: Response, next: NextFunction) => void;
-        getUsers: (req: Request<{}, {}, {}, UsersControllerTypes.GetUsersQuery>, res: Response, next: NextFunction) => void;
-        updateUser: (req: Request<UsersControllerTypes.UpdateUserProps, {}, UsersControllerTypes.UpdateUserBody>, res: Response, next: NextFunction) => void;
+        getUsers: (req: Request<Record<string, unknown>, Record<string, unknown>, Record<string, unknown>, UsersControllerTypes.GetUsersQuery>, res: Response, next: NextFunction) => void;
+        updateUser: (req: Request<UsersControllerTypes.UpdateUserProps, Record<string, unknown>, UsersControllerTypes.UpdateUserBody>, res: Response, next: NextFunction) => void;
         deleteUser: (req: Request<UsersControllerTypes.DeleteUserProps>, res: Response, next: NextFunction) => void;
-    };
+    }
 
     export interface Controller extends ControllerMethods {
         usersService: UsersServiceTypes.Service;
-    };
-};
+    }
+}

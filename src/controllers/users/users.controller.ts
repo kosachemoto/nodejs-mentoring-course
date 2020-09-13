@@ -1,40 +1,41 @@
-import { Request, Response } from 'express';
 import { UsersServiceTypes } from '../../services/users';
 import { UsersControllerTypes } from './users.controller.types';
 import { ERROR_TYPE } from '../../index.conts';
 
-export class UsersController implements UsersControllerTypes.Controller {
+import Controller = UsersControllerTypes.Controller;
+
+export class UsersController implements Controller {
     usersService: UsersServiceTypes.Service;
 
     constructor(usersService: UsersServiceTypes.Service) {
         this.usersService = usersService;
-    };
+    }
 
-    createUser = (req: Request<{}, {}, UsersServiceTypes.CreateData>, res: Response) => {
+    createUser: Controller['createUser'] = (req, res) => {
         this.usersService.createUser({
             ...req.body,
         });
-    
+
         res.send(req.statusCode);
-    };
-    
-    getUser = (req: Request<UsersControllerTypes.GetUserProps>, res: Response) => {
+    }
+
+    getUser: Controller['getUser'] = (req, res) => {
         const id = req.params.id || '';
 
         try {
-            const user = this.usersService.getUser(req.params.id || ''); 
-            
+            const user = this.usersService.getUser(req.params.id || '');
+
             res.send(user);
         } catch(error) {
             if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
                 res.status(400).send({
-                    message: `User with { id: \"${id}\" } doesn't exist.`,
+                    message: `User with { id: "${id}" } doesn't exist.`,
                 });
-            };
-        };
-    };
-    
-    getUsers = (req: Request<{}, {}, {}, UsersControllerTypes.GetUsersQuery>, res: Response) => {
+            }
+        }
+    }
+
+    getUsers: Controller['getUsers'] = (req, res) => {
         const {
             loginSubstring,
             limit,
@@ -48,12 +49,12 @@ export class UsersController implements UsersControllerTypes.Controller {
             const users = this.usersService.getUsers();
 
             res.send(limit ? users.splice(0, limit) : users);
-        };
-    };
-    
-    updateUser = (req: Request<UsersControllerTypes.UpdateUserProps, {}, UsersControllerTypes.UpdateUserBody>, res: Response) => {
+        }
+    }
+
+    updateUser: Controller['updateUser'] = (req, res) => {
         const id = req.params.id || '';
-    
+
         try {
             this.usersService.updateUser({
                 id,
@@ -62,35 +63,35 @@ export class UsersController implements UsersControllerTypes.Controller {
         } catch(error) {
             if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
                 res.status(400).send({
-                    message: `User with { id: \"${id}\" } doesn't exist.`,
+                    message: `User with { id: "${id}" } doesn't exist.`,
                 });
-            };
-        };
+            }
+        }
 
         const updatedUser = this.usersService.getUser(id);
-        
+
         res.send(updatedUser);
-    };
-    
-    deleteUser = (req: Request<UsersControllerTypes.DeleteUserProps>, res: Response) => {
+    }
+
+    deleteUser: Controller['deleteUser'] = (req, res) => {
         const id = req.params.id || '';
-    
+
         try {
             this.usersService.deleteUser(id);
         } catch(error) {
             if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
                 res.status(400).send({
-                    message: `User with { id: \"${id}\" } doesn't exist.`,
+                    message: `User with { id: "${id}" } doesn't exist.`,
                 });
-            };
+            }
 
             if (error.message === ERROR_TYPE.ENTITY_ALREADY_DELETED) {
                 res.status(404).send({
-                    message: `User with { id: \"${id}\" } already delted.`,
+                    message: `User with { id: "${id}" } already delted.`,
                 });
-            };
-        };
+            }
+        }
 
         res.status(200).end();
-    };
-};
+    }
+}

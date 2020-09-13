@@ -2,10 +2,16 @@ import { v4 } from 'uuid';
 import { UsersServiceTypes } from './users.service.types';
 import { ERROR_TYPE } from '../../index.conts';
 
-export class UsersService implements UsersServiceTypes.Service {
-    users: UsersServiceTypes.User[] = [];
+import Service = UsersServiceTypes.Service;
 
-    createUser(data: UsersServiceTypes.CreateData) {
+export class UsersService implements Service {
+    users: UsersServiceTypes.User[];
+
+    constructor() {
+        this.users = [];
+    }
+
+    createUser: Service['createUser'] = (data) => {
         const newUser: UsersServiceTypes.User = {
             ...data,
             id: v4(),
@@ -13,23 +19,23 @@ export class UsersService implements UsersServiceTypes.Service {
         };
 
         this.users.push(newUser);
-    };
+    }
 
-    getUser(id: string) {
+    getUser: Service['getUser'] = (id) => {
         const user = this.users.find((user) => user.id === id && !user.isDeleted);
 
         if (user === undefined) {
             throw(new Error(ERROR_TYPE.ENTITY_DOES_NOT_EXIST));
-        };
+        }
 
         return {...user};
-    };
+    }
 
-    getUsers() {
+    getUsers: Service['getUsers'] = () => {
         return [...this.users];
-    };
+    }
 
-    updateUser(data: UsersServiceTypes.UpdateData) {
+    updateUser: Service['updateUser'] = (data) => {
         const {
             id,
             ...restData
@@ -39,37 +45,37 @@ export class UsersService implements UsersServiceTypes.Service {
 
         if (userIndex === undefined) {
             throw(new Error(ERROR_TYPE.ENTITY_DOES_NOT_EXIST));
-        };
+        }
 
         this.users[userIndex] = {
             ...this.users[userIndex],
             ...restData,
         };
-    };
+    }
 
-    deleteUser(id: string) {
+    deleteUser: Service['deleteUser'] = (id) => {
         const userIndex = this.users.findIndex((user) => user.id === id);
 
         if (userIndex === -1) {
             throw(new Error(ERROR_TYPE.ENTITY_DOES_NOT_EXIST));
-        };
+        }
 
         const user = this.users[userIndex];
 
         if (user.isDeleted) {
             throw(new Error(ERROR_TYPE.ENTITY_ALREADY_DELETED));
-        };
-        
-        user.isDeleted = true;
-    };
+        }
 
-    getAutoSuggestUsers(loginSubstring: string, limit?: number) {
+        user.isDeleted = true;
+    }
+
+    getAutoSuggestUsers: Service['getAutoSuggestUsers'] = (loginSubstring, limit) => {
         const suggestedUsers = this.users.filter(({ isDeleted, login }) => !isDeleted && login.includes(loginSubstring));
 
         if (limit === null && limit === undefined) {
             return suggestedUsers;
-        };
+        }
 
         return suggestedUsers.slice(0, limit);
-    };
-};
+    }
+}

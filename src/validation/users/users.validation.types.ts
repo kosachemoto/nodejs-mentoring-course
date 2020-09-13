@@ -21,9 +21,10 @@ export namespace UsersValidationTypes {
         getUsers: UsersControllerTypes.Controller['getUsers'];
         updateUser: UsersControllerTypes.Controller['updateUser'];
         deleteUser: UsersControllerTypes.Controller['deleteUser'];
-    };
+    }
 
     export interface Validation extends ValidationMethods {
         schema: UsersValidationSchemaTypes.Schema;
-    };
-};
+    }
+}
+

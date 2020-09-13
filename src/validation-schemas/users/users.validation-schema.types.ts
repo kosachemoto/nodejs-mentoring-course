@@ -5,4 +5,4 @@ export namespace UsersValidationSchemaTypes {
     export type Schema = {
         [key in keyof UsersControllerTypes.ControllerMethods]: Joi.ObjectSchema;
     };
-};
+}
