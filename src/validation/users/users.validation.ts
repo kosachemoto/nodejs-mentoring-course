@@ -12,7 +12,7 @@ export class UsersValidation implements UsersValidationTypes.Validation {
         this.schema = schema;
     };
 
-    createUser(req: Request<{}, {}, UsersServiceTypes.CreateData>, res: Response, next: NextFunction) {
+    createUser = (req: Request<{}, {}, UsersServiceTypes.CreateData>, res: Response, next: NextFunction) => {
         const { error } = this.schema.createUser.validate(req.body, { abortEarly: false })
 
         if (!error) {
@@ -22,7 +22,7 @@ export class UsersValidation implements UsersValidationTypes.Validation {
         };
     };
 
-    getUser(req: Request<UsersControllerTypes.GetUserProps>, res: Response, next: NextFunction) {
+    getUser = (req: Request<UsersControllerTypes.GetUserProps>, res: Response, next: NextFunction) => {
         const { error } = this.schema.getUser.validate(req.params);
 
         if (!error) {
@@ -32,7 +32,7 @@ export class UsersValidation implements UsersValidationTypes.Validation {
         };
     };
 
-    getUsers(req: Request<{}, {}, {}, UsersControllerTypes.GetUsersQuery>, res: Response, next: NextFunction) {
+    getUsers = (req: Request<{}, {}, {}, UsersControllerTypes.GetUsersQuery>, res: Response, next: NextFunction) => {
         const { error } = this.schema.getUsers.validate(req.query);
 
         if (!error) {
@@ -44,7 +44,7 @@ export class UsersValidation implements UsersValidationTypes.Validation {
         next();
     };
 
-    updateUser(req: Request<UsersControllerTypes.UpdateUserProps, {}, UsersControllerTypes.UpdateUserBody>, res: Response, next: NextFunction) {
+    updateUser = (req: Request<UsersControllerTypes.UpdateUserProps, {}, UsersControllerTypes.UpdateUserBody>, res: Response, next: NextFunction) => {
         const { error } = this.schema.updateUser.validate({
             ...req.params,
             ...req.body,
@@ -57,7 +57,7 @@ export class UsersValidation implements UsersValidationTypes.Validation {
         };
     };
 
-    deleteUser(req: Request<UsersControllerTypes.DeleteUserProps>, res: Response, next: NextFunction) {
+    deleteUser = (req: Request<UsersControllerTypes.DeleteUserProps>, res: Response, next: NextFunction) => {
         const { error } = this.schema.deleteUser.validate(req.params);
 
         if (!error) {

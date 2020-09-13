@@ -1,5 +1,6 @@
 import { v4 } from 'uuid';
 import { UsersServiceTypes } from './users.service.types';
+import { ERROR_TYPE } from '../../index.conts';
 
 export class UsersService implements UsersServiceTypes.Service {
     users: UsersServiceTypes.User[] = [];
@@ -18,7 +19,7 @@ export class UsersService implements UsersServiceTypes.Service {
         const user = this.users.find((user) => user.id === id && !user.isDeleted);
 
         if (user === undefined) {
-            throw(new Error(`User with { id: \"${id}\" } doesn't exist.`));
+            throw(new Error(ERROR_TYPE.ENTITY_DOES_NOT_EXIST));
         };
 
         return {...user};
@@ -37,7 +38,7 @@ export class UsersService implements UsersServiceTypes.Service {
         const userIndex = this.users.findIndex((user) => user.id === id && !user.isDeleted);
 
         if (userIndex === undefined) {
-            throw(new Error(`User with { id: \"${id}\" } doesn't exist.`));
+            throw(new Error(ERROR_TYPE.ENTITY_DOES_NOT_EXIST));
         };
 
         this.users[userIndex] = {
@@ -47,13 +48,19 @@ export class UsersService implements UsersServiceTypes.Service {
     };
 
     deleteUser(id: string) {
-        const userIndex = this.users.findIndex((user) => user.id === id && !user.isDeleted);
+        const userIndex = this.users.findIndex((user) => user.id === id);
 
-        if (userIndex === undefined) {
-            throw(new Error(`User with { id: \"${id}\" } doesn't exist.`));
+        if (userIndex === -1) {
+            throw(new Error(ERROR_TYPE.ENTITY_DOES_NOT_EXIST));
         };
 
-        this.users[userIndex].isDeleted = true;
+        const user = this.users[userIndex];
+
+        if (user.isDeleted) {
+            throw(new Error(ERROR_TYPE.ENTITY_ALREADY_DELETED));
+        };
+        
+        user.isDeleted = true;
     };
 
     getAutoSuggestUsers(loginSubstring: string, limit?: number) {

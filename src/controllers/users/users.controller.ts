@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { UsersServiceTypes } from '../../services/users';
 import { UsersControllerTypes } from './users.controller.types';
+import { ERROR_TYPE } from '../../index.conts';
 
 export class UsersController implements UsersControllerTypes.Controller {
     usersService: UsersServiceTypes.Service;
@@ -18,14 +19,18 @@ export class UsersController implements UsersControllerTypes.Controller {
     };
     
     getUser = (req: Request<UsersControllerTypes.GetUserProps>, res: Response) => {
+        const id = req.params.id || '';
+
         try {
             const user = this.usersService.getUser(req.params.id || ''); 
             
             res.send(user);
         } catch(error) {
-            res.status(400).send({
-                message: error.message,
-            });
+            if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
+                res.status(400).send({
+                    message: `User with { id: \"${id}\" } doesn't exist.`,
+                });
+            };
         };
     };
     
@@ -55,9 +60,11 @@ export class UsersController implements UsersControllerTypes.Controller {
                 ...req.body,
             });
         } catch(error) {
-            res.status(400).send({
-                message: error.message,
-            });
+            if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
+                res.status(400).send({
+                    message: `User with { id: \"${id}\" } doesn't exist.`,
+                });
+            };
         };
 
         const updatedUser = this.usersService.getUser(id);
@@ -71,9 +78,17 @@ export class UsersController implements UsersControllerTypes.Controller {
         try {
             this.usersService.deleteUser(id);
         } catch(error) {
-            res.status(400).send({
-                message: error.message,
-            });
+            if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
+                res.status(400).send({
+                    message: `User with { id: \"${id}\" } doesn't exist.`,
+                });
+            };
+
+            if (error.message === ERROR_TYPE.ENTITY_ALREADY_DELETED) {
+                res.status(404).send({
+                    message: `User with { id: \"${id}\" } already delted.`,
+                });
+            };
         };
 
         res.status(200).end();
