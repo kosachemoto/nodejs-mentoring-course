@@ -1,13 +1,18 @@
+import { injectable, inject } from 'inversify';
+import { TYPES } from '../../../inversify.types';
+import 'reflect-metadata';
+
+import { Controller } from './users.controller.types';
 import { UsersServiceTypes } from '../../services/users';
-import { UsersControllerTypes } from './users.controller.types';
 import { ERROR_TYPE } from '../../index.conts';
 
-import Controller = UsersControllerTypes.Controller;
-
+@injectable()
 export class UsersController implements Controller {
     usersService: UsersServiceTypes.Service;
 
-    constructor(usersService: UsersServiceTypes.Service) {
+    constructor(
+        @inject(TYPES.USERS.SERVICE) usersService: UsersServiceTypes.Service,
+    ) {
         this.usersService = usersService;
     }
 

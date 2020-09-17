@@ -1,18 +1,20 @@
+import { injectable } from 'inversify';
+import 'reflect-metadata';
+
 import { v4 } from 'uuid';
-import { UsersServiceTypes } from './users.service.types';
+import { User, Service } from './users.service.types';
 import { ERROR_TYPE } from '../../index.conts';
 
-import Service = UsersServiceTypes.Service;
-
+@injectable()
 export class UsersService implements Service {
-    users: UsersServiceTypes.User[];
+    users: User[];
 
     constructor() {
         this.users = [];
     }
 
     createUser: Service['createUser'] = (data) => {
-        const newUser: UsersServiceTypes.User = {
+        const newUser: User = {
             ...data,
             id: v4(),
             isDeleted: false,

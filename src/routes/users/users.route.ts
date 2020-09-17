@@ -1,14 +1,18 @@
 import express from 'express';
-import { UsersService } from '../../services/users';
-import { UsersValidation } from '../../validation/users';
-import { UsersController } from '../../controllers/users';
-import { usersValidationSchema } from '../../validation-schemas/users';
+import { TYPES } from '../../../inversify.types';
+import { container } from '../../../inversify.config';
+import { UsersControllerTypes } from '../../controllers/users';
+import { UsersValidationTypes } from '../../validation/users';
+
+const {
+    CONTROLLER,
+    VALIDATION,
+} = TYPES.USERS;
 
 const userRouter = express.Router();
 
-const usersService = new UsersService();
-const usersValidation = new UsersValidation(usersValidationSchema);
-const usersController = new UsersController(usersService);
+const usersController = container.get<UsersControllerTypes.Controller>(CONTROLLER);
+const usersValidation = container.get<UsersValidationTypes.Validation>(VALIDATION);
 
 userRouter.route('/')
     .post(

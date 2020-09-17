@@ -1,2 +1,2 @@
 export { UsersController } from './users.controller';
-export { UsersControllerTypes } from './users.controller.types';
+export * as UsersControllerTypes from './users.controller.types';

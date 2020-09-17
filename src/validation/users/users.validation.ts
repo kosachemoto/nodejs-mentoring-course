@@ -1,12 +1,17 @@
-import { UsersValidationTypes } from './users.validation.types';
+import { injectable, inject } from 'inversify';
+import { TYPES } from '../../../inversify.types';
+import 'reflect-metadata';
+
+import { Validation } from './users.validation.types';
 import { UsersValidationSchemaTypes } from '../../validation-schemas/users';
 
-import Validation = UsersValidationTypes.Validation;
-
+@injectable()
 export class UsersValidation implements Validation {
     schema: UsersValidationSchemaTypes.Schema;
 
-    constructor(schema: UsersValidationSchemaTypes.Schema) {
+    constructor(
+        @inject(TYPES.USERS.SCHEMA) schema: UsersValidationSchemaTypes.Schema,
+    ) {
         this.schema = schema;
     }
 

@@ -2,7 +2,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import { userRouter } from './src/routes/users';
-import { foo } from './about-db';
 
 dotenv.config();
 
@@ -17,5 +16,3 @@ app.use('/users', userRouter);
 app.listen(port, () => {
     console.log('haha we are listening', port);
 });
-
-foo();
