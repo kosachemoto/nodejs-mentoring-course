@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { UsersControllerTypes } from '../../controllers/users';
+import { UsersControllerTypes } from '@root/src/controllers/users';
 
 export namespace UsersValidationSchemaTypes {
     export type Schema = {

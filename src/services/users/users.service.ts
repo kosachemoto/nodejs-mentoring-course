@@ -1,6 +1,5 @@
-import { injectable } from 'inversify';
 import 'reflect-metadata';
-
+import { injectable } from 'inversify';
 import { v4 } from 'uuid';
 import { User, Service } from './users.service.types';
 import { ERROR_TYPE } from '@root/src/index.conts';
