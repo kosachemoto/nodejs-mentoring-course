@@ -1,8 +1,12 @@
 export const TYPES = {
+    ORM: {
+        DB_OPTIONS: Symbol('DB_OPTIONS'),
+        SEQUELIZE: Symbol('SEQUELIZE'),
+    },
     USERS: {
-        SERVICE: Symbol.for('USERS_SERVICE'),
-        VALIDATION: Symbol.for('USERS_VALIDATION'),
-        SCHEMA: Symbol.for('USERS_SCHEMA'),
-        CONTROLLER: Symbol.for('USERS_CONTROLLER'),
+        SERVICE: Symbol('SERVICE'),
+        VALIDATION: Symbol('VALIDATION'),
+        SCHEMA: Symbol('SCHEMA'),
+        CONTROLLER: Symbol('CONTROLLER'),
     },
 };
