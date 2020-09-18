@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UsersServiceTypes } from '../../services/users';
+import { UsersServiceTypes } from '@root/src/services/users';
 
 export type GetUserProps = Partial<Pick<UsersServiceTypes.User, 'id'>>;
 

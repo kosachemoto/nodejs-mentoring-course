@@ -3,7 +3,7 @@ import 'reflect-metadata';
 
 import { v4 } from 'uuid';
 import { User, Service } from './users.service.types';
-import { ERROR_TYPE } from '../../index.conts';
+import { ERROR_TYPE } from '@root/src/index.conts';
 
 @injectable()
 export class UsersService implements Service {

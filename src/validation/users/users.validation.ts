@@ -1,9 +1,8 @@
-import { injectable, inject } from 'inversify';
-import { TYPES } from '../../../inversify.types';
 import 'reflect-metadata';
-
+import { injectable, inject } from 'inversify';
+import { TYPES } from '@root/inversify.types';
+import { UsersValidationSchemaTypes } from '@root/src/validation-schemas/users';
 import { Validation } from './users.validation.types';
-import { UsersValidationSchemaTypes } from '../../validation-schemas/users';
 
 @injectable()
 export class UsersValidation implements Validation {

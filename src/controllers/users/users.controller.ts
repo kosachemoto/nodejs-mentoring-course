@@ -1,10 +1,9 @@
-import { injectable, inject } from 'inversify';
-import { TYPES } from '../../../inversify.types';
 import 'reflect-metadata';
-
+import { injectable, inject } from 'inversify';
+import { TYPES } from '@root/inversify.types';
+import { UsersServiceTypes } from '@root/src/services/users';
+import { ERROR_TYPE } from '@root/src/index.conts';
 import { Controller } from './users.controller.types';
-import { UsersServiceTypes } from '../../services/users';
-import { ERROR_TYPE } from '../../index.conts';
 
 @injectable()
 export class UsersController implements Controller {

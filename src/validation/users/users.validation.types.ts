@@ -1,6 +1,6 @@
-import { UsersControllerTypes } from '../../controllers/users';
-import { UsersServiceTypes } from '../../services/users';
-import { UsersValidationSchemaTypes } from '../../validation-schemas/users';
+import { UsersControllerTypes } from '@root/src/controllers/users';
+import { UsersServiceTypes } from '@root/src/services/users';
+import { UsersValidationSchemaTypes } from '@root/src/validation-schemas/users';
 
 export type CreateUserSchema = UsersServiceTypes.CreateData;
 

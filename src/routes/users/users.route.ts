@@ -1,8 +1,8 @@
 import express from 'express';
-import { TYPES } from '../../../inversify.types';
-import { container } from '../../../inversify.config';
-import { UsersControllerTypes } from '../../controllers/users';
-import { UsersValidationTypes } from '../../validation/users';
+import { TYPES } from '@root/inversify.types';
+import { container } from '@root/inversify.config';
+import { UsersControllerTypes } from '@root/src/controllers/users';
+import { UsersValidationTypes } from '@root/src/validation/users';
 
 const {
     CONTROLLER,
