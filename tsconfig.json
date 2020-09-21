@@ -46,7 +46,7 @@
         "paths": {                                /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
             "@routes/*": ["./src/routes/*"],
             "@controllers/*": ["./src/controllers/*"],
-            "@validations/*": ["./src/validations/*"],
+            "@validation/*": ["./src/validation/*"],
             "@models/*": ["./src/models/*"],
             "@data-mappers/*": ["./src/data-mappers/*"],
             "@services/*": ["./src/services/*"],
