@@ -14,7 +14,7 @@ export class UsersValidation implements Validation {
         this.schema = schema;
     }
 
-    createUser: Validation['createUser'] = (req, res, next) => {
+    createUser: Validation['createUser'] = async (req, res, next) => {
         const { error } = this.schema.createUser.validate(req.body, { abortEarly: false });
 
         if (!error) {
@@ -24,7 +24,7 @@ export class UsersValidation implements Validation {
         }
     }
 
-    getUser: Validation['getUser'] = (req, res, next) => {
+    getUser: Validation['getUser'] = async (req, res, next) => {
         const { error } = this.schema.getUser.validate(req.params);
 
         if (!error) {
@@ -34,7 +34,7 @@ export class UsersValidation implements Validation {
         }
     }
 
-    getUsers: Validation['getUsers'] = (req, res, next) => {
+    getUsers: Validation['getUsers'] = async (req, res, next) => {
         const { error } = this.schema.getUsers.validate(req.query);
 
         if (!error) {
@@ -46,7 +46,7 @@ export class UsersValidation implements Validation {
         next();
     }
 
-    updateUser: Validation['updateUser'] = (req, res, next) => {
+    updateUser: Validation['updateUser'] = async (req, res, next) => {
         const { error } = this.schema.updateUser.validate({
             ...req.params,
             ...req.body,
@@ -59,7 +59,7 @@ export class UsersValidation implements Validation {
         }
     }
 
-    deleteUser: Validation['deleteUser'] = (req, res, next) => {
+    deleteUser: Validation['deleteUser'] = async (req, res, next) => {
         const { error } = this.schema.deleteUser.validate(req.params);
 
         if (!error) {

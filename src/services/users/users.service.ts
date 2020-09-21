@@ -1,73 +1,73 @@
 import 'reflect-metadata';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { v4 } from 'uuid';
 import { User, Service } from './users.service.types';
 import { ERROR_TYPE } from '@root/src/index.conts';
+import { UsersDALTypes } from '@root/src/dal/users';
+import { TYPES } from '@root/inversify.types';
+import { NUserRepository } from '@root/src/repositories/users';
+
+import IUserRepository = NUserRepository.IUserRepository;
 
 @injectable()
 export class UsersService implements Service {
     users: User[];
+    usersRepository: IUserRepository;
 
-    constructor() {
+    constructor(
+        @inject(TYPES.REPOSITORIES.USERS) usersRepository: IUserRepository,
+    ) {
         this.users = [];
+        this.usersRepository = usersRepository;
     }
 
-    createUser: Service['createUser'] = (data) => {
-        const newUser: User = {
-            ...data,
-            id: v4(),
-            isDeleted: false,
-        };
-
-        this.users.push(newUser);
+    createUser: Service['createUser'] = async (data) => {
+        return this.usersRepository.createUser(data);
     }
 
-    getUser: Service['getUser'] = (id) => {
-        const user = this.users.find((user) => user.id === id && !user.isDeleted);
+    getUser: Service['getUser'] = async (id) => {
+        const users = await this.usersRepository.getUser(id);
 
-        if (user === undefined) {
-            throw(new Error(ERROR_TYPE.ENTITY_DOES_NOT_EXIST));
-        }
-
-        return {...user};
+        return users[0];
     }
 
-    getUsers: Service['getUsers'] = () => {
-        return [...this.users];
+    getUsers: Service['getUsers'] = async () => {
+        const users = await this.usersRepository.getUsers();
+
+        return users;
     }
 
-    updateUser: Service['updateUser'] = (data) => {
-        const {
-            id,
-            ...restData
-        } = data;
+    updateUser: Service['updateUser'] = async (data) => {
+        return this.usersRepository.updateUser(data);
 
-        const userIndex = this.users.findIndex((user) => user.id === id && !user.isDeleted);
+        // const userIndex = this.users.findIndex((user) => user.id === id && !user.isDeleted);
 
-        if (userIndex === undefined) {
-            throw(new Error(ERROR_TYPE.ENTITY_DOES_NOT_EXIST));
-        }
+        // if (userIndex === undefined) {
+        //     throw(new Error(ERROR_TYPE.ENTITY_DOES_NOT_EXIST));
+        // }
 
-        this.users[userIndex] = {
-            ...this.users[userIndex],
-            ...restData,
-        };
+        // this.users[userIndex] = {
+        //     ...this.users[userIndex],
+        //     ...restData,
+        // };
     }
 
-    deleteUser: Service['deleteUser'] = (id) => {
-        const userIndex = this.users.findIndex((user) => user.id === id);
+    deleteUser: Service['deleteUser'] = async (id) => {
+        return this.usersRepository.deleteUser(id);
 
-        if (userIndex === -1) {
-            throw(new Error(ERROR_TYPE.ENTITY_DOES_NOT_EXIST));
-        }
+        // const userIndex = this.users.findIndex((user) => user.id === id);
 
-        const user = this.users[userIndex];
+        // if (userIndex === -1) {
+        //     throw(new Error(ERROR_TYPE.ENTITY_DOES_NOT_EXIST));
+        // }
 
-        if (user.isDeleted) {
-            throw(new Error(ERROR_TYPE.ENTITY_ALREADY_DELETED));
-        }
+        // const user = this.users[userIndex];
 
-        user.isDeleted = true;
+        // if (user.isDeleted) {
+        //     throw(new Error(ERROR_TYPE.ENTITY_ALREADY_DELETED));
+        // }
+
+        // user.isDeleted = true;
     }
 
     getAutoSuggestUsers: Service['getAutoSuggestUsers'] = (loginSubstring, limit) => {

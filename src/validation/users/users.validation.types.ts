@@ -1,14 +1,17 @@
 import { UsersControllerTypes } from '@root/src/controllers/users';
 import { UsersServiceTypes } from '@root/src/services/users';
 import { UsersValidationSchemaTypes } from '@root/src/validation-schemas/users';
+import { UsersDALTypes } from 'src/dal/users';
 
-export type CreateUserSchema = UsersServiceTypes.CreateData;
+import TUserUpdateAttributes = UsersDALTypes.TUserUpdateAttributes;
+
+export type CreateUserSchema = UsersServiceTypes.CreationData;
 
 export type GetUserSchema = {
     id: string;
 };
 
-export type UpdateUserSchema = UsersServiceTypes.UpdateData;
+export type UpdateUserSchema = TUserUpdateAttributes;
 
 export type DeleteUserSchema = {
     id: string;

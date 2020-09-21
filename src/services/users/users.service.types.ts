@@ -1,24 +1,32 @@
+import { UserDomainModelTypes, UserORMModelTypes } from 'src/models/user';
+import { NUserRepository } from 'src/repositories/users';
+import { UsersDALTypes } from 'src/dal/users';
+
+import TUserUpdateAttributes = UsersDALTypes.TUserUpdateAttributes;
+import IUserRepository = NUserRepository.IUserRepository;
+import IUserDomainModel = UserDomainModelTypes.IUserDomainModel;
+import TUserCreationAttributes = UserORMModelTypes.TUserCreationAttributes;
+
 export type User = {
     id: string;
     login: string;
     password: string;
-    age: string;
+    age: number;
     isDeleted: boolean;
 }
 
-export type CreateData = Omit<User, 'id' | 'isDeleted'>;
-
-export type UpdateData = Pick<User, 'id'> & Partial<Omit<User, 'id' | 'isDeleted'>>;
+export type CreationData = TUserCreationAttributes;
 
 export interface ServiceMethods {
-    createUser: (data: CreateData) => void;
-    getUser: (id: string) => User;
-    getUsers: () => User[];
-    updateUser: (data: UpdateData) => void;
-    deleteUser: (id: string) => void;
+    createUser: (data: CreationData) => Promise<IUserDomainModel>;
+    getUser: (id: string) => Promise<IUserDomainModel>;
+    getUsers: () => Promise<IUserDomainModel[]>;
+    updateUser: (data: TUserUpdateAttributes) => Promise<[number, IUserDomainModel[]]>;
+    deleteUser: (id: string) => Promise<[number, IUserDomainModel[]]>;
     getAutoSuggestUsers: (loginSubstring: string, limit?: number) => User[];
 }
 
 export interface Service extends ServiceMethods {
     users: User[];
+    usersRepository: IUserRepository;
 }

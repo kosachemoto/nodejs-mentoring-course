@@ -15,87 +15,131 @@ export class UsersController implements Controller {
         this.usersService = usersService;
     }
 
-    createUser: Controller['createUser'] = (req, res) => {
+    createUser: Controller['createUser'] = async (req, res) => {
         this.usersService.createUser({
             ...req.body,
-        });
-
-        res.send(req.statusCode);
+        }).then((user) => {
+            res.send(user);
+        }).catch((error) => {
+            res.send(error);
+        })
     }
 
-    getUser: Controller['getUser'] = (req, res) => {
+    getUser: Controller['getUser'] = async (req, res) => {
+        // TODO: Добавить это условия в правила валидации
+        // TODO: Поправить типы
         const id = req.params.id || '';
 
-        try {
-            const user = this.usersService.getUser(req.params.id || '');
+        this.usersService.getUser(id)
+            .then((users) => {
+                res.send(users);
+            }).catch((error) => {
+                res.send(error);
+            })
 
-            res.send(user);
-        } catch(error) {
-            if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
-                res.status(400).send({
-                    message: `User with { id: "${id}" } doesn't exist.`,
-                });
-            }
-        }
+        // try {
+        //     const user = this.usersService.getUser(req.params.id || '');
+
+        //     res.send(user);
+        // } catch(error) {
+        //     if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
+        //         res.status(400).send({
+        //             message: `User with { id: "${id}" } doesn't exist.`,
+        //         });
+        //     }
+        // }
     }
 
-    getUsers: Controller['getUsers'] = (req, res) => {
+    getUsers: Controller['getUsers'] = async (req, res) => {
         const {
             loginSubstring,
             limit,
         } = req.query;
 
-        if (loginSubstring) {
-            const users = this.usersService.getAutoSuggestUsers(loginSubstring, limit);
+        Promise.resolve()
+            .then(() => {
+                return loginSubstring ? this.usersService.getAutoSuggestUsers(loginSubstring, limit) :
+                    this.usersService.getUsers();
+            })
+            .then((users) => {
+                res.send(users);
+            }).catch((error) => {
+                res.send(error);
+            })
 
-            res.send(users);
-        } else {
-            const users = this.usersService.getUsers();
+        // TODO: Перенести все эти проверки в сервис
+        // if (loginSubstring) {
+        //     const users = this.usersService.getAutoSuggestUsers(loginSubstring, limit);
 
-            res.send(limit ? users.splice(0, limit) : users);
-        }
+        //     res.send(users);
+        // } else {
+        //     this.usersService.getUsers().then((users) => {
+        //             res.send(limit ? users.splice(0, limit) : users);
+        //         }).catch((error) => {
+        //             res.send(error)
+        //         });
+
+        // }
     }
 
-    updateUser: Controller['updateUser'] = (req, res) => {
+    updateUser: Controller['updateUser'] = async (req, res) => {
         const id = req.params.id || '';
-
-        try {
-            this.usersService.updateUser({
-                id,
-                ...req.body,
-            });
-        } catch(error) {
-            if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
-                res.status(400).send({
-                    message: `User with { id: "${id}" } doesn't exist.`,
-                });
-            }
+        const updateData = {
+            id,
+            ...req.body,
         }
 
-        const updatedUser = this.usersService.getUser(id);
+        this.usersService.updateUser(updateData)
+            .then((...value) => {
+                res.send(value);
+            }).catch((error) => {
+                res.send(error);
+            });
 
-        res.send(updatedUser);
+        // try {
+        //     this.usersService.updateUser({
+        //         id,
+        //         ...req.body,
+        //     });
+        // } catch(error) {
+        //     if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
+        //         res.status(400).send({
+        //             message: `User with { id: "${id}" } doesn't exist.`,
+        //         });
+        //     }
+        // }
+
+        // const updatedUser = this.usersService.getUser(id);
+
+        // res.send(updatedUser);
     }
 
     deleteUser: Controller['deleteUser'] = (req, res) => {
         const id = req.params.id || '';
 
-        try {
-            this.usersService.deleteUser(id);
-        } catch(error) {
-            if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
-                res.status(400).send({
-                    message: `User with { id: "${id}" } doesn't exist.`,
-                });
-            }
+        this.usersService.deleteUser(id)
+            .then((...value) => {
+                res.send(value);
+            }).catch((error) => {
+                res.send(error);
+            })
 
-            if (error.message === ERROR_TYPE.ENTITY_ALREADY_DELETED) {
-                res.status(404).send({
-                    message: `User with { id: "${id}" } already delted.`,
-                });
-            }
-        }
+        // try {
+        //     this.usersService.deleteUser(id);
+        // } catch(error) {
+        //     if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
+        //         res.status(400).send({
+        //             message: `User with { id: "${id}" } doesn't exist.`,
+        //         });
+        //     }
 
-        res.status(200).end();
+        //     if (error.message === ERROR_TYPE.ENTITY_ALREADY_DELETED) {
+        //         res.status(404).send({
+        //             message: `User with { id: "${id}" } already delted.`,
+        //         });
+        //     }
+        // }
+
+        // res.status(200).end();
     }
 }

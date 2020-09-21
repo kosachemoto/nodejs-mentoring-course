@@ -19,7 +19,7 @@ userRouter.route('/')
         usersValidation.createUser,
         usersController.createUser)
     .get(
-        usersValidation.getUsers,
+        // usersValidation.getUsers,
         usersController.getUsers);
 
 userRouter.route('/:id')
