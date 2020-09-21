@@ -1,17 +1,17 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'inversify';
-import { TYPES } from '@root/inversify.types';
 import { DataTypes, Sequelize } from 'sequelize';
 import { v4 } from 'uuid';
-import { TUserORMModel } from './user.orm-model.types';
+import { TYPE } from '@ioc';
+import { TUserDAL } from './user.dal.types';
 
 @injectable()
-export class UserORMModel {
+export class UserDAL {
     constructor(
-        @inject(TYPES.ORM.SEQUELIZE) sequelize: Sequelize,
-        @inject(TYPES.ORM.DATA_TYPES) dataTypes: typeof DataTypes,
+        @inject(TYPE.ORM.SEQUELIZE) sequelize: Sequelize,
+        @inject(TYPE.ORM.DATA_TYPES) dataTypes: typeof DataTypes,
     ) {
-        const User = sequelize.define<TUserORMModel>('User', {
+        const User = sequelize.define<TUserDAL>('User', {
             id: {
                 type: dataTypes.UUID,
                 allowNull: false,

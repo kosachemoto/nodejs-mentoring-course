@@ -1,6 +1,6 @@
-import { IUserDomainModel, TUserCreationAttributes } from './user.domain-model.types';
+import { IUserDTO, TUserDTOCreationData } from './user.dto.types';
 
-export class UserDomainModel implements IUserDomainModel {
+export class UserDTO implements IUserDTO {
     id: string;
     login: string;
     password: string;
@@ -13,7 +13,7 @@ export class UserDomainModel implements IUserDomainModel {
         password,
         age,
         isDeleted,
-    }: TUserCreationAttributes) {
+    }: TUserDTOCreationData) {
         this.id = id;
         this.login = login;
         this.password = password;

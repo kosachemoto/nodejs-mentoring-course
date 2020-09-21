@@ -1,6 +1,6 @@
-import { IUserDALModel, TUserCreationAttributes } from './user.dal-model.types';
+import { IUserDomain, TUserDomainCreationData } from './user.domain.types';
 
-export class UserDALModel implements IUserDALModel {
+export class UserDomain implements IUserDomain {
     id: string;
     login: string;
     password: string;
@@ -13,13 +13,11 @@ export class UserDALModel implements IUserDALModel {
         password,
         age,
         isDeleted,
-    }: TUserCreationAttributes) {
+    }: TUserDomainCreationData) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.age = age;
         this.isDeleted = isDeleted;
-
-        return this;
     }
 }
