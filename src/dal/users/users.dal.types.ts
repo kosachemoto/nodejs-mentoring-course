@@ -10,7 +10,7 @@ export type TUserUpdateAttributes = Pick<IUserDALAttributes, 'id'> & Partial<Omi
 export interface IUsersDAL {
     createUser: (data: TUserDALCreationAttributes) => Promise<TUserDAL>;
     getUser: (id: IUserDALAttributes['id']) => Promise<TUserDAL[]>;
-    getUsers: () => Promise<TUserDAL[]>;
+    getUsers: (limit?: number) => Promise<TUserDAL[]>;
     updateUser: (data: TUserUpdateAttributes) => Promise<[number, TUserDAL[]]>;
     deleteUser: (id: IUserDALAttributes['id']) => Promise<[number, TUserDAL[]]>;
 }

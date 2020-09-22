@@ -30,8 +30,8 @@ export class UsersDAL implements IUsersDAL {
         }) as Promise<TUserDAL[]>;
     }
 
-    getUsers: IUsersDAL['getUsers'] = async () => {
-        return this.userModel.findAll() as Promise<TUserDAL[]>;
+    getUsers: IUsersDAL['getUsers'] = async (limit) => {
+        return this.userModel.findAll({ limit }) as Promise<TUserDAL[]>;
     }
 
     // TODO: Поменять тип
@@ -44,7 +44,7 @@ export class UsersDAL implements IUsersDAL {
         }) as Promise<[number, TUserDAL[]]>
     }
 
-    deleteUser: IUsersDAL['deleteUser'] = async (id: string) => {
+    deleteUser: IUsersDAL['deleteUser'] = async (id) => {
         return this.userModel.update({ isDeleted: true }, {
             fields: ['isDeleted'],
             where: {

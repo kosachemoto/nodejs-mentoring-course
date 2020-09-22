@@ -1,0 +1,1 @@
+export { UserDoesNotExist } from './custom-errors';
