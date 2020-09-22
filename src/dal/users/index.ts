@@ -1,2 +1,2 @@
 export { UsersDAL } from './users.dal';
-export * as UsersDALTypes from './users.dal.types';
+export * as NUsersDAL from './users.dal.types';

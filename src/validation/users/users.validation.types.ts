@@ -1,28 +1,29 @@
-import { UsersControllerTypes } from '@root/src/controllers/users';
-import { UsersServiceTypes } from '@root/src/services/users';
-import { UsersValidationSchemaTypes } from '@root/src/validation-schemas/users';
-import { UsersDALTypes } from 'src/dal/users';
+import { NUsersController } from '@controllers/users';
+import { NUsersService } from '@services/users';
+import { UsersValidationSchemaTypes } from 'src/validation-schemas/users';
+import { NUsersDAL } from '@dal/users';
 
-import TUserUpdateAttributes = UsersDALTypes.TUserUpdateAttributes;
+// import TUserUpdateAttributes = UsersDALTypes.TUserUpdateAttributes;
+import IUsersController = NUsersController.IUsersController;
 
-export type CreateUserSchema = UsersServiceTypes.CreationData;
+// export type CreateUserSchema = NUsersService.TUserCreationData;
 
 export type GetUserSchema = {
     id: string;
 };
 
-export type UpdateUserSchema = TUserUpdateAttributes;
+// export type UpdateUserSchema = TUserUpdateAttributes;
 
 export type DeleteUserSchema = {
     id: string;
 };
 
 export interface ValidationMethods {
-    createUser: UsersControllerTypes.Controller['createUser'];
-    getUser: UsersControllerTypes.Controller['getUser'];
-    getUsers: UsersControllerTypes.Controller['getUsers'];
-    updateUser: UsersControllerTypes.Controller['updateUser'];
-    deleteUser: UsersControllerTypes.Controller['deleteUser'];
+    createUser: IUsersController['createUser'];
+    getUser: IUsersController['getUser'];
+    getUsers: IUsersController['getUsers'];
+    updateUser: IUsersController['updateUser'];
+    deleteUser: IUsersController['deleteUser'];
 }
 
 export interface Validation extends ValidationMethods {

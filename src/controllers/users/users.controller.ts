@@ -1,21 +1,23 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'inversify';
-import { TYPES } from '@root/inversify.types';
-import { UsersServiceTypes } from '@root/src/services/users';
-import { ERROR_TYPE } from '@root/src/index.conts';
-import { Controller } from './users.controller.types';
+import { TYPE } from '@ioc/inversify.types';
+import { NUsersService } from '@services/users';
+import { ERROR_TYPE } from 'src/index.conts';
+import { IUsersController } from './users.controller.types';
+
+import IUsersService = NUsersService.IUsersService;
 
 @injectable()
-export class UsersController implements Controller {
-    usersService: UsersServiceTypes.Service;
+export class UsersController implements IUsersController {
+    usersService: IUsersService;
 
     constructor(
-        @inject(TYPES.USERS.SERVICE) usersService: UsersServiceTypes.Service,
+        @inject(TYPE.SERVICE.USERS) usersService: IUsersService,
     ) {
         this.usersService = usersService;
     }
 
-    createUser: Controller['createUser'] = async (req, res) => {
+    createUser: IUsersController['createUser'] = async (req, res) => {
         this.usersService.createUser({
             ...req.body,
         }).then((user) => {
@@ -25,7 +27,7 @@ export class UsersController implements Controller {
         })
     }
 
-    getUser: Controller['getUser'] = async (req, res) => {
+    getUser: IUsersController['getUser'] = async (req, res) => {
         // TODO: Добавить это условия в правила валидации
         // TODO: Поправить типы
         const id = req.params.id || '';
@@ -50,7 +52,7 @@ export class UsersController implements Controller {
         // }
     }
 
-    getUsers: Controller['getUsers'] = async (req, res) => {
+    getUsers: IUsersController['getUsers'] = async (req, res) => {
         const {
             loginSubstring,
             limit,
@@ -82,7 +84,7 @@ export class UsersController implements Controller {
         // }
     }
 
-    updateUser: Controller['updateUser'] = async (req, res) => {
+    updateUser: IUsersController['updateUser'] = async (req, res) => {
         const id = req.params.id || '';
         const updateData = {
             id,
@@ -114,7 +116,7 @@ export class UsersController implements Controller {
         // res.send(updatedUser);
     }
 
-    deleteUser: Controller['deleteUser'] = (req, res) => {
+    deleteUser: IUsersController['deleteUser'] = (req, res) => {
         const id = req.params.id || '';
 
         this.usersService.deleteUser(id)

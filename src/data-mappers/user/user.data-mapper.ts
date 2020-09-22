@@ -1,35 +1,35 @@
 import "reflect-metadata";
 import { injectable, inject } from 'inversify';
-import { TYPES } from "@root/inversify.types";
+import { TYPE } from "@ioc/inversify.types";
 import {
-    UserDALModelTypes,
-    UserDomainModelTypes,
- } from "@root/src/models/user";
+    NUserDomain,
+    NUserDTO,
+} from "@models/user";
+import { IUserDataMapper } from './user.data-mapper.types';
 
-import IUserDALModel = UserDALModelTypes.IUserDALModel;
-import IUserDALModelConstructor = UserDALModelTypes.IUserDALModelConstructor;
-import IUserDomainModel = UserDomainModelTypes.IUserDomainModel;
-import IUserDomainModelConstructor = UserDomainModelTypes.IUserDomainModelConstructor;;
-
+import IUserDomain = NUserDomain.IUserDomain;
+import IUserDomainConstructor = NUserDomain.IUserDomainConstructor;
+import IUserDTO = NUserDTO.IUserDTO;
+import IUserDTOConstructor = NUserDTO.IUserDTOConstructor;
 
 @injectable()
-export class UserDataMapper {
-    UserDALModel: IUserDALModelConstructor;
-    UserDomainModel: IUserDomainModelConstructor;
+export class UserDataMapper implements IUserDataMapper {
+    UserDomain: IUserDomainConstructor;
+    UserDTO: IUserDTOConstructor;
 
     constructor(
-        @inject(TYPES.MODELS.DAL.USER) UserDALModel: IUserDALModelConstructor,
-        @inject(TYPES.MODELS.DOMAIN.USER) UserDomainModel: IUserDomainModelConstructor,
+        @inject(TYPE.MODEL.DOMAIN.USER) UserDomain: IUserDomainConstructor,
+        @inject(TYPE.MODEL.DTO.USER) UserDTO: IUserDTOConstructor,
     ) {
-        this.UserDALModel = UserDALModel;
-        this.UserDomainModel = UserDomainModel;
+        this.UserDomain = UserDomain;
+        this.UserDTO = UserDTO;
     }
 
-    toDomain = (DALUser: IUserDALModel) => {
-        return new this.UserDomainModel(DALUser);
+    toDomain = (userDTO: IUserDTO) => {
+        return new this.UserDomain(userDTO);
     }
 
-    toDAL = (DomainUser: IUserDomainModel) => {
-        return new this.UserDALModel(DomainUser);
+    toDTO = (userDomain: IUserDomain) => {
+        return new this.UserDTO(userDomain);
     }
 }

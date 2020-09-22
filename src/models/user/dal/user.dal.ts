@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { injectable, inject } from 'inversify';
 import { DataTypes, Sequelize } from 'sequelize';
 import { v4 } from 'uuid';
-import { TYPE } from '@ioc';
+import { TYPE } from '@ioc/inversify.types';
 import { TUserDAL } from './user.dal.types';
 
 @injectable()

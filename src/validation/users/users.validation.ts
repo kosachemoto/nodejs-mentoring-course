@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'inversify';
-import { TYPES } from '@root/inversify.types';
-import { UsersValidationSchemaTypes } from '@root/src/validation-schemas/users';
+import { TYPE } from '@ioc/inversify.types';
+import { UsersValidationSchemaTypes } from 'src/validation-schemas/users';
 import { Validation } from './users.validation.types';
 
 @injectable()
@@ -9,7 +9,7 @@ export class UsersValidation implements Validation {
     schema: UsersValidationSchemaTypes.Schema;
 
     constructor(
-        @inject(TYPES.USERS.SCHEMA) schema: UsersValidationSchemaTypes.Schema,
+        @inject(TYPE.VALIDATION.SCHEMA.USER) schema: UsersValidationSchemaTypes.Schema,
     ) {
         this.schema = schema;
     }

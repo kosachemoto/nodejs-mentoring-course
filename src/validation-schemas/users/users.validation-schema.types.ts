@@ -1,8 +1,10 @@
 import Joi from 'joi';
-import { UsersControllerTypes } from '@root/src/controllers/users';
+import { NUsersController } from '@controllers/users';
+
+import IUsersController = NUsersController.IUsersController;
 
 export namespace UsersValidationSchemaTypes {
     export type Schema = {
-        [key in keyof UsersControllerTypes.ControllerMethods]: Joi.ObjectSchema;
+        [key in keyof IUsersController]: Joi.ObjectSchema;
     };
 }

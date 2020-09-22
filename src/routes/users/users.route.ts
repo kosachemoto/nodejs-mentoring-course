@@ -1,18 +1,15 @@
 import express from 'express';
-import { TYPES } from '@root/inversify.types';
-import { container } from '@root/inversify.config';
-import { UsersControllerTypes } from '@root/src/controllers/users';
-import { UsersValidationTypes } from '@root/src/validation/users';
+import { TYPE } from '@ioc/inversify.types';
+import { container } from '@ioc/inversify.config';
+import { NUsersController } from '@controllers/users';
+import { UsersValidationTypes } from '@validation/users';
 
-const {
-    CONTROLLER,
-    VALIDATION,
-} = TYPES.USERS;
+import IUsersController = NUsersController.IUsersController;
 
 const userRouter = express.Router();
 
-const usersController = container.get<UsersControllerTypes.Controller>(CONTROLLER);
-const usersValidation = container.get<UsersValidationTypes.Validation>(VALIDATION);
+const usersController = container.get<IUsersController>(TYPE.CONTROLLER.USER);
+const usersValidation = container.get<UsersValidationTypes.Validation>(TYPE.VALIDATION.RULES.USER);
 
 userRouter.route('/')
     .post(

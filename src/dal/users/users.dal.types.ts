@@ -1,19 +1,20 @@
-import { UserORMModelTypes } from '@root/src/models/user';
+import { NUserDAL } from '@models/user';
 
-import TUserORMModel = UserORMModelTypes.TUserORMModel;
-import IUserAttributes = UserORMModelTypes.IUserAttributes;
-import TUserCreationAttributes = UserORMModelTypes.TUserCreationAttributes;
+import TUserDAL = NUserDAL.TUserDAL;
+import TUserDALDefined = NUserDAL.TUserDALDefined;
+import IUserDALAttributes = NUserDAL.IUserDALAttributes;
+import TUserDALCreationAttributes = NUserDAL.TUserDALCreationAttributes;
 
-export type TUserUpdateAttributes = Pick<IUserAttributes, 'id'> & Partial<Omit<IUserAttributes, 'isDeleted'>>;
+export type TUserUpdateAttributes = Pick<IUserDALAttributes, 'id'> & Partial<Omit<IUserDALAttributes, 'isDeleted'>>;
 
-export interface DALMethods {
-    createUser: (data: TUserCreationAttributes) => Promise<TUserORMModel>;
-    getUser: (id: IUserAttributes['id']) => Promise<TUserORMModel[]>;
-    getUsers: () => Promise<TUserORMModel[]>;
-    updateUser: (data: TUserUpdateAttributes) => Promise<[number, TUserORMModel[]]>;
-    deleteUser: (id: IUserAttributes['id']) => Promise<[number, TUserORMModel[]]>;
+export interface IUsersDAL {
+    createUser: (data: TUserDALCreationAttributes) => Promise<TUserDAL>;
+    getUser: (id: IUserDALAttributes['id']) => Promise<TUserDAL[]>;
+    getUsers: () => Promise<TUserDAL[]>;
+    updateUser: (data: TUserUpdateAttributes) => Promise<[number, TUserDAL[]]>;
+    deleteUser: (id: IUserDALAttributes['id']) => Promise<[number, TUserDAL[]]>;
 }
 
-export interface DAL extends DALMethods {
-
+export interface IDALConstructor {
+    new(userModel: TUserDALDefined): IUsersDAL;
 }

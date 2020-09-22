@@ -1,56 +1,55 @@
 import "reflect-metadata";
 import { injectable, inject } from 'inversify';
-import { TYPES } from '@root/inversify.types';
-import { UserORMModelTypes } from 'src/models/user';
-import { UsersDALTypes } from ".";
+import { TYPE } from '@ioc/inversify.types';
+import { NUserDAL } from '@models/user';
+import { IUsersDAL } from './users.dal.types';
 
-import TUserDefinedORMModel = UserORMModelTypes.TUserDefinedORMModel;
-import IUserAttributes = UserORMModelTypes.IUserAttributes;
-import { TUserORMModel } from "@root/src/models/user/user.orm-model.types";
+import TUserDAL = NUserDAL.TUserDAL;
+import TUserDALDefined = NUserDAL.TUserDALDefined;
 
-// TODO: Поправить возвращаеые типы методов
+// TODO: Поправить возвращаеые типы
 @injectable()
-export class UsersDAL implements UsersDALTypes.DAL {
-    userORMModel: TUserDefinedORMModel;
+export class UsersDAL implements IUsersDAL {
+    userModel: TUserDALDefined;
 
     constructor(
-        @inject(TYPES.MODELS.ORM.USER) userORMModel: TUserDefinedORMModel,
+        @inject(TYPE.MODEL.DAL.USER) userModel: TUserDALDefined,
     ) {
-        this.userORMModel = userORMModel;
+        this.userModel = userModel;
     }
 
-    createUser: UsersDALTypes.DAL['createUser'] = async (creationData) => {
-        return this.userORMModel.create(creationData) as Promise<TUserORMModel>;
+    createUser: IUsersDAL['createUser'] = async (creationData) => {
+        return this.userModel.create(creationData) as Promise<TUserDAL>;
     }
 
-    getUser: UsersDALTypes.DAL['getUser'] = async (id) => {
-        return this.userORMModel.findAll({
+    getUser: IUsersDAL['getUser'] = async (id) => {
+        return this.userModel.findAll({
             where: {
                 id,
             }
-        }) as Promise<TUserORMModel[]>;
+        }) as Promise<TUserDAL[]>;
     }
 
-    getUsers: UsersDALTypes.DAL['getUsers'] = async () => {
-        return this.userORMModel.findAll() as Promise<TUserORMModel[]>;
+    getUsers: IUsersDAL['getUsers'] = async () => {
+        return this.userModel.findAll() as Promise<TUserDAL[]>;
     }
 
     // TODO: Поменять тип
-    updateUser: UsersDALTypes.DAL['updateUser'] = async (data) => {
-        return this.userORMModel.update(data, {
+    updateUser: IUsersDAL['updateUser'] = async (data) => {
+        return this.userModel.update(data, {
             fields: ['login', 'password', 'age'],
             where: {
                 id: data.id
             }
-        }) as Promise<[number, TUserORMModel[]]>
+        }) as Promise<[number, TUserDAL[]]>
     }
 
-    deleteUser: UsersDALTypes.DAL['deleteUser'] = async (id: string) => {
-        return this.userORMModel.update({ isDeleted: true }, {
+    deleteUser: IUsersDAL['deleteUser'] = async (id: string) => {
+        return this.userModel.update({ isDeleted: true }, {
             fields: ['isDeleted'],
             where: {
                 id,
             }
-        }) as Promise<[number, TUserORMModel[]]>
+        }) as Promise<[number, TUserDAL[]]>
     }
 }

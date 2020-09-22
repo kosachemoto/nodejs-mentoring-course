@@ -1,44 +1,44 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { v4 } from 'uuid';
-import { User, Service } from './users.service.types';
-import { ERROR_TYPE } from '@root/src/index.conts';
-import { UsersDALTypes } from '@root/src/dal/users';
-import { TYPES } from '@root/inversify.types';
-import { NUserRepository } from '@root/src/repositories/users';
+import { IUsersService } from './users.service.types';
+import { ERROR_TYPE } from 'src/index.conts';
+import { TYPE } from '@ioc/inversify.types';
+import { NUsersDAL } from '@dal/users';
 
-import IUserRepository = NUserRepository.IUserRepository;
+import IUsersDAL = NUsersDAL.IUsersDAL;
 
+// TODO: Добавить маппинг данных
 @injectable()
-export class UsersService implements Service {
-    users: User[];
-    usersRepository: IUserRepository;
+export class UsersService implements IUsersService {
+    users: any[];
+    usersDAL: IUsersDAL;
 
     constructor(
-        @inject(TYPES.REPOSITORIES.USERS) usersRepository: IUserRepository,
+        @inject(TYPE.DAL.USERS) usersDAL: IUsersDAL,
     ) {
         this.users = [];
-        this.usersRepository = usersRepository;
+        this.usersDAL = usersDAL;
     }
 
-    createUser: Service['createUser'] = async (data) => {
-        return this.usersRepository.createUser(data);
+    createUser: IUsersService['createUser'] = async (data) => {
+        return this.usersDAL.createUser(data);
     }
 
-    getUser: Service['getUser'] = async (id) => {
-        const users = await this.usersRepository.getUser(id);
+    getUser: IUsersService['getUser'] = async (id) => {
+        const users = await this.usersDAL.getUser(id);
 
         return users[0];
     }
 
-    getUsers: Service['getUsers'] = async () => {
-        const users = await this.usersRepository.getUsers();
+    getUsers: IUsersService['getUsers'] = async () => {
+        const users = await this.usersDAL.getUsers();
 
         return users;
     }
 
-    updateUser: Service['updateUser'] = async (data) => {
-        return this.usersRepository.updateUser(data);
+    updateUser: IUsersService['updateUser'] = async (data) => {
+        return this.usersDAL.updateUser(data);
 
         // const userIndex = this.users.findIndex((user) => user.id === id && !user.isDeleted);
 
@@ -52,8 +52,8 @@ export class UsersService implements Service {
         // };
     }
 
-    deleteUser: Service['deleteUser'] = async (id) => {
-        return this.usersRepository.deleteUser(id);
+    deleteUser: IUsersService['deleteUser'] = async (id) => {
+        return this.usersDAL.deleteUser(id);
 
         // const userIndex = this.users.findIndex((user) => user.id === id);
 
@@ -70,7 +70,7 @@ export class UsersService implements Service {
         // user.isDeleted = true;
     }
 
-    getAutoSuggestUsers: Service['getAutoSuggestUsers'] = (loginSubstring, limit) => {
+    getAutoSuggestUsers: IUsersService['getAutoSuggestUsers'] = (loginSubstring, limit) => {
         const suggestedUsers = this.users.filter(({ isDeleted, login }) => !isDeleted && login.includes(loginSubstring));
 
         if (limit === null && limit === undefined) {

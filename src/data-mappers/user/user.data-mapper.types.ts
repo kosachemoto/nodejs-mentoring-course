@@ -1,18 +1,18 @@
-import { UserDALModelTypes, UserDomainModelTypes } from '@root/src/models/user';
+import { NUserDomain, NUserDTO } from '@models/user';
 
-import IUserDALModel = UserDALModelTypes.IUserDALModel;
-import IUserDALModelConstructor = UserDALModelTypes.IUserDALModelConstructor;
-import IUserDomainModel = UserDomainModelTypes.IUserDomainModel;
-import IUserDomainModelConstructor = UserDomainModelTypes.IUserDomainModelConstructor;
+import IUserDomain = NUserDomain.IUserDomain;
+import IUserDomainConstructor = NUserDomain.IUserDomainConstructor;
+import IUserDTO = NUserDTO.IUserDTO;
+import IUserDTOConstructor = NUserDTO.IUserDTOConstructor;
 
 export interface IUserDataMapper {
-    toDomain(userModel: IUserDALModel): IUserDomainModel;
-    toDAL(userModel: IUserDomainModel): IUserDALModel;
+    toDomain(userDTO: IUserDTO): IUserDomain;
+    toDTO(userDomain: IUserDomain): IUserDTO;
 }
 
 export interface IUserDataMapperConstructor {
     new(
-        UserDALModel: IUserDALModelConstructor,
-        UserDomainModel: IUserDomainModelConstructor,
+        UserDomain: IUserDomainConstructor,
+        UserDTO: IUserDTOConstructor,
     ): IUserDataMapper;
 }
