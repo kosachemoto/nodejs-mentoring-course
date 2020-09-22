@@ -7,12 +7,12 @@ import { NUsersRules } from '@validation/users';
 import IUsersController = NUsersController.IUsersController;
 import IUsersRules = NUsersRules.IUsersRules;
 
-const userRouter = express.Router();
+const usersRouter = express.Router();
 
 const usersController = container.get<IUsersController>(TYPE.CONTROLLER.USER);
 const usersValidation = container.get<IUsersRules>(TYPE.VALIDATION.RULES.USER);
 
-userRouter.route('/')
+usersRouter.route('/')
     .post(
         usersValidation.createUser,
         usersController.createUser)
@@ -20,7 +20,7 @@ userRouter.route('/')
         usersValidation.getUsers,
         usersController.getUsers);
 
-userRouter.route('/:id')
+usersRouter.route('/:id')
     .get(
         usersValidation.getUser,
         usersController.getUser)
@@ -31,4 +31,4 @@ userRouter.route('/:id')
         usersValidation.deleteUser,
         usersController.deleteUser);
 
-export { userRouter };
+export { usersRouter };
