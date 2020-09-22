@@ -1,4 +1,3 @@
-// TODO: Протянуть зависимость
 export interface IUserDTO {
     id: string;
     login: string;

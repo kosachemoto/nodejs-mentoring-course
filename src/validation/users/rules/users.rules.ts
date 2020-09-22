@@ -44,8 +44,6 @@ export class UsersRules implements IUsersRules {
         } else {
             res.status(400).send(error);
         }
-
-        next();
     }
 
     updateUser: IUsersRules['updateUser'] = async (req, res, next) => {

@@ -7,7 +7,6 @@ import { IUsersDAL } from './users.dal.types';
 import TUserDAL = NUserDAL.TUserDAL;
 import TUserDALDefined = NUserDAL.TUserDALDefined;
 
-// TODO: Поправить возвращаеые типы
 @injectable()
 export class UsersDAL implements IUsersDAL {
     userModel: TUserDALDefined;
@@ -34,14 +33,13 @@ export class UsersDAL implements IUsersDAL {
         return this.userModel.findAll({ limit }) as Promise<TUserDAL[]>;
     }
 
-    // TODO: Поменять тип
     updateUser: IUsersDAL['updateUser'] = async (data) => {
         return this.userModel.update(data, {
             fields: ['login', 'password', 'age'],
             where: {
                 id: data.id
             }
-        }) as Promise<[number, TUserDAL[]]>
+        }) as Promise<[number, TUserDAL[]]>;
     }
 
     deleteUser: IUsersDAL['deleteUser'] = async (id) => {
@@ -50,6 +48,6 @@ export class UsersDAL implements IUsersDAL {
             where: {
                 id,
             }
-        }) as Promise<[number, TUserDAL[]]>
+        }) as Promise<[number, TUserDAL[]]>;
     }
 }

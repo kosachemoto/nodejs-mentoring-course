@@ -3,9 +3,8 @@ import { injectable, inject } from 'inversify';
 import { TYPE } from '@ioc/inversify.types';
 import { NUsersService } from '@services/users';
 import { IUsersController } from './users.controller.types';
-import { UserDoesNotExist } from 'src/utils';
+import { DataMappingError, UserDoesNotExist } from 'src/utils';
 
-// TODO: Поправить типы методов
 import IUsersService = NUsersService.IUsersService;
 
 @injectable()
@@ -23,9 +22,15 @@ export class UsersController implements IUsersController {
             ...req.body,
         }).then((user) => {
             res.send(user);
-        }).catch(() => {
+        }).catch((error) => {
+            let message = 'Unexpected error.';
+
+            if (error instanceof DataMappingError) {
+                message = error.message;
+            }
+
             res.status(400).send({
-                message: 'Unexpected error.'
+                message,
             });
         })
     }
@@ -38,6 +43,10 @@ export class UsersController implements IUsersController {
                 res.send(user);
             }).catch((error) => {
                 let message = 'Unexpected error.';
+
+                if (error instanceof DataMappingError) {
+                    message = error.message;
+                }
 
                 if (error instanceof UserDoesNotExist) {
                     message = `User with { id: "${id}" } doesn't exist.`;
@@ -58,14 +67,23 @@ export class UsersController implements IUsersController {
         this.usersService.getUsers(loginSubstring, limit)
             .then((users) => {
                 res.send(users);
-            }).catch(() => {
+            }).catch((error) => {
+                let message = 'Unexpected error.';
+    
+                if (error instanceof DataMappingError) {
+                    message = error.message;
+                }
+
+                if (error instanceof DataMappingError) {
+                    message = error.message;
+                }
+    
                 res.status(400).send({
-                    message: 'Unexpected error.'
+                    message,
                 });
             });
     }
 
-    // TODO: Добавить обработку ошибок
     updateUser: IUsersController['updateUser'] = async (req, res) => {
         const id = req.params.id || '';
         const updateData = {
@@ -76,23 +94,38 @@ export class UsersController implements IUsersController {
         this.usersService.updateUser(updateData)
             .then((...value) => {
                 res.send(value);
-            }).catch(() => {
+            }).catch((error) => {
+                let message = 'Unexpected error.';
+
+                if (error instanceof DataMappingError) {
+                    message = error.message;
+                }
+
+                if (error instanceof UserDoesNotExist) {
+                    message = `User with { id: "${id}" } doesn't exist.`;
+                }
+
                 res.status(400).send({
-                    message: 'Unexpected error.'
+                    message,
                 });
             })
     }
 
-    // TODO: Добавить обработку ошибок
     deleteUser: IUsersController['deleteUser'] = (req, res) => {
         const id = req.params.id || '';
 
         this.usersService.deleteUser(id)
-            .then((...value) => {
-                res.send(value);
-            }).catch(() => {
+            .then(() => {
+                res.send();
+            }).catch((error) => {
+                let message = 'Unexpected error.';
+
+                if (error instanceof UserDoesNotExist) {
+                    message = `User with { id: "${id}" } doesn't exist.`;
+                }
+
                 res.status(400).send({
-                    message: 'Unexpected error.'
+                    message,
                 });
             })
     }

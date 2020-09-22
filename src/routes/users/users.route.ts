@@ -16,9 +16,8 @@ userRouter.route('/')
     .post(
         usersValidation.createUser,
         usersController.createUser)
-    // TODO: Разобраться, что здесь не так с валидацией
     .get(
-        // usersValidation.getUsers,
+        usersValidation.getUsers,
         usersController.getUsers);
 
 userRouter.route('/:id')

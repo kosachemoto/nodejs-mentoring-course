@@ -1,1 +1,4 @@
-export { UserDoesNotExist } from './custom-errors';
+export { 
+    DataMappingError,
+    UserDoesNotExist,
+} from './custom-errors';
