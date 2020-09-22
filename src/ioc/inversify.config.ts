@@ -13,7 +13,6 @@ import { UserDataMapper } from '@data-mappers/user';
 import { UsersDAL } from '@dal/users';
 import { UsersService } from '@services/users';
 import { UsersController } from '@controllers/users';
-import { usersValidationSchema } from 'src/validation-schemas/users';
 import { 
     UsersRules,
     UsersSchema,
