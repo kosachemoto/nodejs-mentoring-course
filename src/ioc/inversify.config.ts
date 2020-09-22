@@ -14,7 +14,10 @@ import { UsersDAL } from '@dal/users';
 import { UsersService } from '@services/users';
 import { UsersController } from '@controllers/users';
 import { usersValidationSchema } from 'src/validation-schemas/users';
-import { UsersValidation } from 'src/validation/users';
+import { 
+    UsersRules,
+    UsersSchema,
+ } from 'src/validation/users';
 
 export const container = new Container({
     skipBaseClassChecks: true,
@@ -35,5 +38,5 @@ container.bind(TYPE.DAL.USERS).to(UsersDAL).inSingletonScope();
 container.bind(TYPE.SERVICE.USERS).to(UsersService).inSingletonScope();
 container.bind(TYPE.CONTROLLER.USER).to(UsersController).inSingletonScope();
 
-container.bind(TYPE.VALIDATION.SCHEMA.USER).toConstantValue(usersValidationSchema);
-container.bind(TYPE.VALIDATION.RULES.USER).to(UsersValidation).inSingletonScope();
+container.bind(TYPE.VALIDATION.SCHEMA.USER).to(UsersSchema).inSingletonScope();
+container.bind(TYPE.VALIDATION.RULES.USER).to(UsersRules).inSingletonScope();

@@ -1,2 +1,2 @@
-export { UsersValidation } from './users.validation';
-export * as UsersValidationTypes from './users.validation.types';
+export * from './rules';
+export * from './schema';
