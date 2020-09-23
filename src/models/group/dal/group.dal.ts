@@ -1,44 +1,35 @@
 import 'reflect-metadata';
-import { injectable, inject, } from 'inversify';
+import { injectable, inject } from 'inversify';
 import { DataTypes, Sequelize } from 'sequelize';
 import { v4 } from 'uuid';
 import { TYPE } from '@ioc/inversify.types';
-import { TUserDAL } from './user.dal.types';
+import { TGroupDAL } from './group.dal.types';
 
 @injectable()
-export class UserDAL {
+export class GroupDAL {
     constructor(
         @inject(TYPE.ORM.SEQUELIZE) sequelize: Sequelize,
         @inject(TYPE.ORM.DATA_TYPES) dataTypes: typeof DataTypes,
     ) {
-        const User = sequelize.define<TUserDAL>('User', {
+        const Group = sequelize.define<TGroupDAL>('Group', {
             id: {
                 type: dataTypes.UUID,
                 allowNull: false,
                 primaryKey: true,
                 defaultValue: v4(),
             },
-            login: {
-                type: dataTypes.TEXT,
-                allowNull: false
-            },
-            password: {
-                type: dataTypes.TEXT,
+            name: {
+                type: dataTypes.STRING,
                 allowNull: false,
             },
-            age: {
-                type: dataTypes.INTEGER,
-                allowNull: false
-            },
-            isDeleted: {
-                type: dataTypes.BOOLEAN,
+            permissions: {
+                type: dataTypes.STRING,
                 allowNull: false,
-                defaultValue: false,
-            }
+            },
         }, {
             timestamps: false,
         });
 
-        return User;
+        return Group;
     }
 }

@@ -4,6 +4,7 @@ export const TYPE = {
     },
     CONTROLLER: {
         USER: Symbol('USER_CONTROLLER'),
+        GROUP: Symbol('GROUP_CONTROLLER'),
     },
     VALIDATION: {
         RULES: {
@@ -15,6 +16,7 @@ export const TYPE = {
     },
     MODEL: {
         DAL: {
+            GROUP: Symbol('GROUP_DAL_MODEL'),
             USER: Symbol('USER_DAL_MODEL'),
         },
         DOMAIN: {
@@ -22,6 +24,7 @@ export const TYPE = {
         },
         DTO: {
             USER: Symbol('USER_DTO_MODEL'),
+            GROUP: Symbol('GROUP_DTO_MODEL'),
         },
     },
     DATA_MAPPER: {
@@ -29,9 +32,11 @@ export const TYPE = {
     },
     SERVICE: {
         USERS: Symbol('USERS_SERVICE'),
+        GROUPS: Symbol('GROUPS_SERVICE'),
     },
     DAL: {
         USERS: Symbol('USERS_DAL'),
+        GROUPS: Symbol('GROUPS_DAL'),
     },
     ORM: {
         DB_OPTIONS: Symbol('DB_OPTIONS'),
