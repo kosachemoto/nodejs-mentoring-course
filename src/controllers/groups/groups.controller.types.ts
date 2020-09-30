@@ -19,6 +19,8 @@ export interface IGroupsController {
     getGroups: (req: Request<Record<string, unknown>, Record<string, unknown>, Record<string, unknown>>, res: Response, next: NextFunction) => void;
     updateGroup: (req: Request<TUpdateGroupProps, Record<string, unknown>, TUpdateGroupBody>, res: Response, next: NextFunction) => void;
     deleteGroup: (req: Request<TDeleteGroupProps>, res: Response, next: NextFunction) => void;
+    addGroupUsers: (req: Request, res: Response, next: NextFunction) => void;
+    getGroupUsers: (req: Request, res: Response, next: NextFunction) => void;
 }
 
 export interface IGroupsControllerConstructor {

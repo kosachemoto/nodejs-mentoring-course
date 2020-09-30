@@ -13,9 +13,14 @@ groupsRoute.route('/')
     .post(groupsController.createGroup)
     .get(groupsController.getGroups);
 
-    groupsRoute.route('/:id')
+groupsRoute.route('/:id')
     .get(groupsController.getGroup)
     .put(groupsController.updateGroup)
     .delete(groupsController.deleteGroup);
+    
+groupsRoute.route('/:id/users/')
+    .post(groupsController.addGroupUsers)
+    .get(groupsController.getGroupUsers);
+
 
 export { groupsRoute };

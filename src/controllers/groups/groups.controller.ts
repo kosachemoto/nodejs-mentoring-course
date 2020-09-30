@@ -131,4 +131,25 @@ export class GroupsController implements IGroupsController {
                 });
             })
     }
+
+    addGroupUsers: IGroupsController['addGroupUsers'] = (req, res) => {
+        const groupId = req.params.id || '';
+        const usersIds = req.body.users || [];
+
+        this.groupsService.addGroupUsers(groupId, usersIds).then(() => {
+            res.send();
+        }).catch((error) => {
+            res.send(error);
+        });
+    }
+
+    getGroupUsers: IGroupsController['getGroupUsers'] = (req, res) => {
+        const groupId = req.params.id || '';
+
+        this.groupsService.getGroupUsers(groupId).then((users) => {
+            res.send(users);
+        }).catch((error) => {
+            res.send(error);
+        });
+    }
 }
