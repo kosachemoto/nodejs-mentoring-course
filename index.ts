@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-import { userRouter } from './src/routes/users';
+import { userRouter } from '@routes/users';
 
 dotenv.config();
 

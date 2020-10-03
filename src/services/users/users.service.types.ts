@@ -1,27 +1,31 @@
-export namespace UsersServiceTypes {
-    export type User = {
-        id: string;
-        login: string;
-        password: string;
-        age: string;
-        isDeleted: boolean;
-    }
+import {
+    NUserDAL,
+    NUserDTO,
+} from '@models/user';
+import { NUserDataMapper } from '@data-mappers/user';
+import { NUsersDAL } from '@dal/users';
 
-    export type CreateData = Omit<User, 'id' | 'isDeleted'>;
+import IUserDataMapper = NUserDataMapper.IUserDataMapper;
+import TUserUpdateAttributes = NUsersDAL.TUserUpdateAttributes;
+import IUsersDAL = NUsersDAL.IUsersDAL;
+import TUserDALCreationAttributes = NUserDAL.TUserDALCreationAttributes;
+import IUserDTO = NUserDTO.IUserDTO;
 
-    export type UpdateData = Pick<User, 'id'> & Partial<Omit<User, 'id' | 'isDeleted'>>;
+export type TUserCreationData = TUserDALCreationAttributes;
 
-    export interface ServiceMethods {
-        createUser: (data: CreateData) => void;
-        getUser: (id: string) => User;
-        getUsers: () => User[];
-        updateUser: (data: UpdateData) => void;
-        deleteUser: (id: string) => void;
-        getAutoSuggestUsers: (loginSubstring: string, limit?: number) => User[];
-    }
+export type TUserUpdateData = TUserUpdateAttributes;
 
-    export interface Service extends ServiceMethods {
-        users: User[];
-    }
+export interface IUsersService {
+    usersDAL: IUsersDAL;
+    userDataMapper: IUserDataMapper;
+
+    createUser: (data: TUserCreationData) => Promise<IUserDTO>;
+    getUser: (id: string) => Promise<IUserDTO>;
+    getUsers: (loginSubstring?: string, limit?: number) => Promise<IUserDTO[]>;
+    updateUser: (data: TUserUpdateData) => Promise<IUserDTO>;
+    deleteUser: (id: string) => Promise<number>;
 }
 
+export interface IUsersServiceConstructor {
+    new(usersDAL: IUsersDAL, userDataMapper: IUserDataMapper): IUsersService;
+}

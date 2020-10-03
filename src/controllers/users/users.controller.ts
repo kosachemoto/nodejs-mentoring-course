@@ -1,97 +1,132 @@
-import { UsersServiceTypes } from '../../services/users';
-import { UsersControllerTypes } from './users.controller.types';
-import { ERROR_TYPE } from '../../index.conts';
+import 'reflect-metadata';
+import { injectable, inject } from 'inversify';
+import { TYPE } from '@ioc/inversify.types';
+import { NUsersService } from '@services/users';
+import { IUsersController } from './users.controller.types';
+import { DataMappingError, UserDoesNotExist } from 'src/utils';
 
-import Controller = UsersControllerTypes.Controller;
+import IUsersService = NUsersService.IUsersService;
 
-export class UsersController implements Controller {
-    usersService: UsersServiceTypes.Service;
+@injectable()
+export class UsersController implements IUsersController {
+    usersService: IUsersService;
 
-    constructor(usersService: UsersServiceTypes.Service) {
+    constructor(
+        @inject(TYPE.SERVICE.USERS) usersService: IUsersService,
+    ) {
         this.usersService = usersService;
     }
 
-    createUser: Controller['createUser'] = (req, res) => {
+    createUser: IUsersController['createUser'] = async (req, res) => {
         this.usersService.createUser({
             ...req.body,
-        });
+        }).then((user) => {
+            res.send(user);
+        }).catch((error) => {
+            let message = 'Unexpected error.';
 
-        res.send(req.statusCode);
+            if (error instanceof DataMappingError) {
+                message = error.message;
+            }
+
+            res.status(400).send({
+                message,
+            });
+        })
     }
 
-    getUser: Controller['getUser'] = (req, res) => {
+    getUser: IUsersController['getUser'] = async (req, res) => {
         const id = req.params.id || '';
 
-        try {
-            const user = this.usersService.getUser(req.params.id || '');
+        this.usersService.getUser(id)
+            .then((user) => {
+                res.send(user);
+            }).catch((error) => {
+                let message = 'Unexpected error.';
 
-            res.send(user);
-        } catch(error) {
-            if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
+                if (error instanceof DataMappingError) {
+                    message = error.message;
+                }
+
+                if (error instanceof UserDoesNotExist) {
+                    message = `User with { id: "${id}" } doesn't exist.`;
+                }
+
                 res.status(400).send({
-                    message: `User with { id: "${id}" } doesn't exist.`,
+                    message,
                 });
-            }
-        }
+            });
     }
 
-    getUsers: Controller['getUsers'] = (req, res) => {
+    getUsers: IUsersController['getUsers'] = async (req, res) => {
         const {
             loginSubstring,
             limit,
         } = req.query;
 
-        if (loginSubstring) {
-            const users = this.usersService.getAutoSuggestUsers(loginSubstring, limit);
+        this.usersService.getUsers(loginSubstring, limit)
+            .then((users) => {
+                res.send(users);
+            }).catch((error) => {
+                let message = 'Unexpected error.';
+    
+                if (error instanceof DataMappingError) {
+                    message = error.message;
+                }
 
-            res.send(users);
-        } else {
-            const users = this.usersService.getUsers();
-
-            res.send(limit ? users.splice(0, limit) : users);
-        }
-    }
-
-    updateUser: Controller['updateUser'] = (req, res) => {
-        const id = req.params.id || '';
-
-        try {
-            this.usersService.updateUser({
-                id,
-                ...req.body,
+                if (error instanceof DataMappingError) {
+                    message = error.message;
+                }
+    
+                res.status(400).send({
+                    message,
+                });
             });
-        } catch(error) {
-            if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
-                res.status(400).send({
-                    message: `User with { id: "${id}" } doesn't exist.`,
-                });
-            }
-        }
-
-        const updatedUser = this.usersService.getUser(id);
-
-        res.send(updatedUser);
     }
 
-    deleteUser: Controller['deleteUser'] = (req, res) => {
+    updateUser: IUsersController['updateUser'] = async (req, res) => {
         const id = req.params.id || '';
-
-        try {
-            this.usersService.deleteUser(id);
-        } catch(error) {
-            if (error.message === ERROR_TYPE.ENTITY_DOES_NOT_EXIST) {
-                res.status(400).send({
-                    message: `User with { id: "${id}" } doesn't exist.`,
-                });
-            }
-
-            if (error.message === ERROR_TYPE.ENTITY_ALREADY_DELETED) {
-                res.status(404).send({
-                    message: `User with { id: "${id}" } already delted.`,
-                });
-            }
+        const updateData = {
+            id,
+            ...req.body,
         }
 
-        res.status(200).end();
+        this.usersService.updateUser(updateData)
+            .then((...value) => {
+                res.send(value);
+            }).catch((error) => {
+                let message = 'Unexpected error.';
+
+                if (error instanceof DataMappingError) {
+                    message = error.message;
+                }
+
+                if (error instanceof UserDoesNotExist) {
+                    message = `User with { id: "${id}" } doesn't exist.`;
+                }
+
+                res.status(400).send({
+                    message,
+                });
+            })
+    }
+
+    deleteUser: IUsersController['deleteUser'] = (req, res) => {
+        const id = req.params.id || '';
+
+        this.usersService.deleteUser(id)
+            .then(() => {
+                res.send();
+            }).catch((error) => {
+                let message = 'Unexpected error.';
+
+                if (error instanceof UserDoesNotExist) {
+                    message = `User with { id: "${id}" } doesn't exist.`;
+                }
+
+                res.status(400).send({
+                    message,
+                });
+            })
     }
 }

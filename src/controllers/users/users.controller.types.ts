@@ -1,29 +1,32 @@
 import { Request, Response, NextFunction } from 'express';
-import { UsersServiceTypes } from '../../services/users';
+import { NUsersService } from '@services/users';
+import { NUserDTO } from '@models/user';
 
-export namespace UsersControllerTypes {
-    export type GetUserProps = Partial<Pick<UsersServiceTypes.User, 'id'>>;
+import IUsersService = NUsersService.IUsersService;
+import TUserCreationData = NUsersService.TUserCreationData;
+import IUserDTO = NUserDTO.IUserDTO;
 
-    export type GetUsersQuery = {
-        loginSubstring?: string;
-        limit?: number;
-    };
+export type TGetUserProps = Partial<Pick<IUserDTO, 'id'>>;
 
-    export type UpdateUserProps = Partial<Pick<UsersServiceTypes.User, 'id'>>;
+export type TGetUsersQuery = {
+    loginSubstring?: string;
+    limit?: number;
+};
 
-    export type UpdateUserBody = Partial<Omit<UsersServiceTypes.User, 'id'>>;
+export type TUpdateUserProps = Partial<Pick<IUserDTO, 'id'>>;
 
-    export type DeleteUserProps = Partial<Pick<UsersServiceTypes.User, 'id'>>;
+export type TUpdateUserBody = Partial<Omit<IUserDTO, 'id'>>;
 
-    export interface ControllerMethods {
-        createUser: (req: Request<Record<string, unknown>, Record<string, unknown>, UsersServiceTypes.CreateData>, res: Response, next: NextFunction) => void;
-        getUser: (req: Request<UsersControllerTypes.GetUserProps>, res: Response, next: NextFunction) => void;
-        getUsers: (req: Request<Record<string, unknown>, Record<string, unknown>, Record<string, unknown>, UsersControllerTypes.GetUsersQuery>, res: Response, next: NextFunction) => void;
-        updateUser: (req: Request<UsersControllerTypes.UpdateUserProps, Record<string, unknown>, UsersControllerTypes.UpdateUserBody>, res: Response, next: NextFunction) => void;
-        deleteUser: (req: Request<UsersControllerTypes.DeleteUserProps>, res: Response, next: NextFunction) => void;
-    }
+export type TDeleteUserProps = Partial<Pick<IUserDTO, 'id'>>;
 
-    export interface Controller extends ControllerMethods {
-        usersService: UsersServiceTypes.Service;
-    }
+export interface IUsersController {
+    createUser: (req: Request<Record<string, unknown>, Record<string, unknown>, TUserCreationData>, res: Response, next: NextFunction) => void;
+    getUser: (req: Request<TGetUserProps>, res: Response, next: NextFunction) => void;
+    getUsers: (req: Request<Record<string, unknown>, Record<string, unknown>, Record<string, unknown>, TGetUsersQuery>, res: Response, next: NextFunction) => void;
+    updateUser: (req: Request<TUpdateUserProps, Record<string, unknown>, TUpdateUserBody>, res: Response, next: NextFunction) => void;
+    deleteUser: (req: Request<TDeleteUserProps>, res: Response, next: NextFunction) => void;
+}
+
+export interface IUsersControllerConstructor {
+    new(usersService: IUsersService): IUsersController;
 }

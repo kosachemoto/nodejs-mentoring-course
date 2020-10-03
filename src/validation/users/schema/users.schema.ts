@@ -1,5 +1,7 @@
+import "reflect-metadata";
+import { injectable } from 'inversify';
 import Joi from 'joi';
-import { UsersValidationSchemaTypes } from './users.validation-schema.types';
+import { IUsersSchema } from './users.schema.types';
 
 const id = Joi.string().required();
 const optionalLogin = Joi.string().min(3);
@@ -12,26 +14,27 @@ const requiredAge = optionalAge.required();
 const loginSubstring = Joi.string();
 const limit = Joi.string();
 
-export const usersValidationSchema: UsersValidationSchemaTypes.Schema = {
-    createUser: Joi.object().keys({
+@injectable()
+export class UsersSchema implements IUsersSchema {
+    createUser = Joi.object().keys({
         login: requiredLogin,
         password: requiredPassword,
         age: requiredAge,
-    }),
-    getUser: Joi.object({
+    });
+    getUser = Joi.object({
         id,
-    }),
-    getUsers: Joi.object({
+    });
+    getUsers = Joi.object({
         loginSubstring,
         limit,
-    }),
-    updateUser: Joi.object({
+    });
+    updateUser = Joi.object({
         id,
         login: optionalLogin,
         password: optionalPassword,
         age: optionalAge,
-    }),
-    deleteUser: Joi.object({
+    });
+    deleteUser = Joi.object({
         id,
-    }),
+    });
 };

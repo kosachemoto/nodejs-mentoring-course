@@ -1,16 +1,22 @@
-import { UsersValidationTypes } from './users.validation.types';
-import { UsersValidationSchemaTypes } from '../../validation-schemas/users';
+import 'reflect-metadata';
+import { injectable, inject } from 'inversify';
+import { TYPE } from '@ioc/inversify.types';
+import { NUsersSchema } from '../schema';
+import { IUsersRules } from './users.rules.types';
 
-import Validation = UsersValidationTypes.Validation;
+import IUsersSchema = NUsersSchema.IUsersSchema;
 
-export class UsersValidation implements Validation {
-    schema: UsersValidationSchemaTypes.Schema;
+@injectable()
+export class UsersRules implements IUsersRules {
+    schema: IUsersSchema;
 
-    constructor(schema: UsersValidationSchemaTypes.Schema) {
+    constructor(
+        @inject(TYPE.VALIDATION.SCHEMA.USER) schema: IUsersSchema,
+    ) {
         this.schema = schema;
     }
 
-    createUser: Validation['createUser'] = (req, res, next) => {
+    createUser: IUsersRules['createUser'] = async (req, res, next) => {
         const { error } = this.schema.createUser.validate(req.body, { abortEarly: false });
 
         if (!error) {
@@ -20,7 +26,7 @@ export class UsersValidation implements Validation {
         }
     }
 
-    getUser: Validation['getUser'] = (req, res, next) => {
+    getUser: IUsersRules['getUser'] = async (req, res, next) => {
         const { error } = this.schema.getUser.validate(req.params);
 
         if (!error) {
@@ -30,7 +36,7 @@ export class UsersValidation implements Validation {
         }
     }
 
-    getUsers: Validation['getUsers'] = (req, res, next) => {
+    getUsers: IUsersRules['getUsers'] = async (req, res, next) => {
         const { error } = this.schema.getUsers.validate(req.query);
 
         if (!error) {
@@ -38,11 +44,9 @@ export class UsersValidation implements Validation {
         } else {
             res.status(400).send(error);
         }
-
-        next();
     }
 
-    updateUser: Validation['updateUser'] = (req, res, next) => {
+    updateUser: IUsersRules['updateUser'] = async (req, res, next) => {
         const { error } = this.schema.updateUser.validate({
             ...req.params,
             ...req.body,
@@ -55,7 +59,7 @@ export class UsersValidation implements Validation {
         }
     }
 
-    deleteUser: Validation['deleteUser'] = (req, res, next) => {
+    deleteUser: IUsersRules['deleteUser'] = async (req, res, next) => {
         const { error } = this.schema.deleteUser.validate(req.params);
 
         if (!error) {

@@ -1,14 +1,16 @@
 import express from 'express';
-import { UsersService } from '../../services/users';
-import { UsersValidation } from '../../validation/users';
-import { UsersController } from '../../controllers/users';
-import { usersValidationSchema } from '../../validation-schemas/users';
+import { TYPE } from '@ioc/inversify.types';
+import { container } from '@ioc/inversify.config';
+import { NUsersController } from '@controllers/users';
+import { NUsersRules } from '@validation/users';
+
+import IUsersController = NUsersController.IUsersController;
+import IUsersRules = NUsersRules.IUsersRules;
 
 const userRouter = express.Router();
 
-const usersService = new UsersService();
-const usersValidation = new UsersValidation(usersValidationSchema);
-const usersController = new UsersController(usersService);
+const usersController = container.get<IUsersController>(TYPE.CONTROLLER.USER);
+const usersValidation = container.get<IUsersRules>(TYPE.VALIDATION.RULES.USER);
 
 userRouter.route('/')
     .post(

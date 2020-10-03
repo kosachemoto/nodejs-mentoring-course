@@ -1,2 +1,2 @@
 export { UsersService } from './users.service';
-export { UsersServiceTypes } from './users.service.types';
+export * as NUsersService from './users.service.types';
