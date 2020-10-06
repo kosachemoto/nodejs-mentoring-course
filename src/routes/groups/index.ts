@@ -1,0 +1,1 @@
+export { groupsRoute } from './groups.route';
