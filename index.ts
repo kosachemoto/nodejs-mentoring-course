@@ -22,12 +22,26 @@ const app = express();
 const port = process.env.PORT;
 
 const mode = container.get<string>(TYPE.APPLICATION.MODE);
+const logger = container.get<NMorganTypes.IMorganLogger>(TYPE.MORGAN.LOGGER);
+const {
+    req: reqLogger,
+    res: resLogger,
+} = logger;
+
 app.set('case sensitive routing', true);
 
 app.use(bodyParser.json());
+
+app.use(reqLogger);
+app.use(resLogger);
+
 app.use('/users', usersRouter);
 app.use('/groups', groupsRoute);
 
 app.listen(port, () => {
     console.log('haha we are listening', port);
+
+app.use(reqLogger);
+app.use(resLogger);
+
 });

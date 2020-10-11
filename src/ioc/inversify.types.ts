@@ -2,6 +2,9 @@ export const TYPE = {
     APPLICATION: {
         MODE: Symbol(),
     },
+    MORGAN: {
+        LOGGER: Symbol(),
+    },
     WINSTON: {
         LOGGER: Symbol(),
         STREAM: Symbol(),
