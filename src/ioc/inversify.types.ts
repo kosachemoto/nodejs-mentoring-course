@@ -2,6 +2,10 @@ export const TYPE = {
     APPLICATION: {
         MODE: Symbol(),
     },
+    WINSTON: {
+        LOGGER: Symbol(),
+        STREAM: Symbol(),
+    },
     ROUTE: {
         USER: Symbol('USER_ROUTE'),
     },

@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import winston from 'winston';
 import { injectable, inject } from 'inversify';
 import { TYPE } from '@ioc/inversify.types';
 import { NUsersService } from '@services/users';
@@ -10,11 +11,14 @@ import IUsersService = NUsersService.IUsersService;
 @injectable()
 export class UsersController implements IUsersController {
     usersService: IUsersService;
+    logger: winston.Logger;
 
     constructor(
         @inject(TYPE.SERVICE.USERS) usersService: IUsersService,
+        @inject(TYPE.WINSTON.LOGGER) logger: winston.Logger,
     ) {
         this.usersService = usersService;
+        this.logger = logger;
     }
 
     createUser: IUsersController['createUser'] = async (req, res) => {
@@ -51,6 +55,8 @@ export class UsersController implements IUsersController {
                 if (error instanceof UserDoesNotExist) {
                     message = `User with { id: "${id}" } doesn't exist.`;
                 }
+
+                this.logger.error(error);
 
                 res.status(400).send({
                     message,

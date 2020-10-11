@@ -36,6 +36,8 @@ export const container = new Container({
 });
 
 container.bind(TYPE.APPLICATION.MODE).toConstantValue(applicationMode);
+container.bind(TYPE.WINSTON.LOGGER).to(WinstonLogger).inSingletonScope();
+container.bind(TYPE.WINSTON.STREAM).to(WinstonStream).inSingletonScope();
 container.bind(TYPE.ORM.DB_OPTIONS).toConstantValue(options);
 container.bind(TYPE.ORM.DATA_TYPES).toConstantValue(DataTypes);
 container.bind(TYPE.ORM.SEQUELIZE).to(OverloadedSequelize).inSingletonScope();
