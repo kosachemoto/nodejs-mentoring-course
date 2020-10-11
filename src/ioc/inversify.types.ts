@@ -1,4 +1,7 @@
 export const TYPE = {
+    APPLICATION: {
+        MODE: Symbol(),
+    },
     ROUTE: {
         USER: Symbol('USER_ROUTE'),
     },

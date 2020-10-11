@@ -3,6 +3,7 @@ import { Container } from 'inversify';
 import { TYPE } from './inversify.types';
 
 import { DataTypes } from 'sequelize';
+import { applicationMode } from 'src/commander';
 import { options, OverloadedSequelize } from 'src/orm';
 import {
     UserDAL,
@@ -34,6 +35,7 @@ export const container = new Container({
     skipBaseClassChecks: true,
 });
 
+container.bind(TYPE.APPLICATION.MODE).toConstantValue(applicationMode);
 container.bind(TYPE.ORM.DB_OPTIONS).toConstantValue(options);
 container.bind(TYPE.ORM.DATA_TYPES).toConstantValue(DataTypes);
 container.bind(TYPE.ORM.SEQUELIZE).to(OverloadedSequelize).inSingletonScope();
