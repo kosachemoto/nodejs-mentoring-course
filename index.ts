@@ -30,6 +30,10 @@ const {
 
 app.set('case sensitive routing', true);
 
+process.on('uncaughtException', (err: Error, origin: any) => {
+    console.log('### я упал((9(');
+});
+
 app.use(bodyParser.json());
 
 app.use(reqLogger);
@@ -39,9 +43,6 @@ app.use('/users', usersRouter);
 app.use('/groups', groupsRoute);
 
 app.listen(port, () => {
-    console.log('haha we are listening', port);
-
-app.use(reqLogger);
-app.use(resLogger);
-
+    console.log(`[application] haha we are listening ${port}`);
+    console.log(`[application] mode: ${mode}`);
 });

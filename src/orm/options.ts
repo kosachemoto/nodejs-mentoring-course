@@ -20,9 +20,10 @@ export const options: Options = {
     port: parseInt(DB_PORT || '', 10),
     password: DB_PASSWORD,
     dialect: DB_DIALECT as Options['dialect'],
+    logging: false,
     dialectOptions: {
         ssl: {
             rejectUnauthorized: false,
         },
-    }
+    },
 };

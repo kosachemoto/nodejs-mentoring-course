@@ -10,47 +10,47 @@ export const TYPE = {
         STREAM: Symbol(),
     },
     ROUTE: {
-        USER: Symbol('USER_ROUTE'),
+        USER: Symbol(),
     },
     CONTROLLER: {
-        USER: Symbol('USER_CONTROLLER'),
-        GROUP: Symbol('GROUP_CONTROLLER'),
+        USER: Symbol(),
+        GROUP: Symbol(),
     },
     VALIDATION: {
         RULES: {
-            USER: Symbol('USER_VALIDATION_RULE'),
+            USER: Symbol(),
         },
         SCHEMA: {
-            USER: Symbol('USER_VALIDATION_SCHEMA'),
+            USER: Symbol(),
         },
     },
     MODEL: {
         DAL: {
-            GROUP: Symbol('GROUP_DAL_MODEL'),
-            USER: Symbol('USER_DAL_MODEL'),
+            GROUP: Symbol(),
+            USER: Symbol(),
         },
         DOMAIN: {
-            USER: Symbol('USER_DOMAIN_MODEL'),
+            USER: Symbol(),
         },
         DTO: {
-            USER: Symbol('USER_DTO_MODEL'),
-            GROUP: Symbol('GROUP_DTO_MODEL'),
+            USER: Symbol(),
+            GROUP: Symbol(),
         },
     },
     DATA_MAPPER: {
-        USER: Symbol('USER_DATA_MAPPER'),
+        USER: Symbol(),
     },
     SERVICE: {
-        USERS: Symbol('USERS_SERVICE'),
-        GROUPS: Symbol('GROUPS_SERVICE'),
+        USERS: Symbol(),
+        GROUPS: Symbol(),
     },
     DAL: {
-        USERS: Symbol('USERS_DAL'),
-        GROUPS: Symbol('GROUPS_DAL'),
+        USERS: Symbol(),
+        GROUPS: Symbol(),
     },
     ORM: {
-        DB_OPTIONS: Symbol('DB_OPTIONS'),
-        SEQUELIZE: Symbol('SEQUELIZE'),
-        DATA_TYPES: Symbol('DATA_TYPES'),
+        DB_OPTIONS: Symbol(),
+        SEQUELIZE: Symbol(),
+        DATA_TYPES: Symbol(),
     },
 };

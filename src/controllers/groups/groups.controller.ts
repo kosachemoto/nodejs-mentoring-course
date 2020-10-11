@@ -23,8 +23,6 @@ export class GroupsController implements IGroupsController {
         }).then((user) => {
             res.send(user);
         }).catch((error) => {
-            console.log('### error:', error);
-
             let message = 'Unexpected error.';
 
             if (error instanceof DataMappingError) {
