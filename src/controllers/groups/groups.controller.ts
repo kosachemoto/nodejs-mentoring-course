@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { injectable, inject } from 'inversify';
+import winston from 'winston';
 import { TYPE } from '@ioc/inversify.types';
 import { IGroupsController } from './groups.controller.types';
 import { NGroupsService } from '@services/groups';
@@ -10,11 +11,14 @@ import IGroupsService = NGroupsService.IGroupsService;
 @injectable()
 export class GroupsController implements IGroupsController {
     groupsService: IGroupsService;
+    logger: winston.Logger;
 
     constructor(
         @inject(TYPE.SERVICE.GROUPS) groupsService: IGroupsService,
+        @inject(TYPE.WINSTON.LOGGER) logger: winston.Logger,
     ) {
         this.groupsService = groupsService;
+        this.logger = logger;
     }
 
     createGroup: IGroupsController['createGroup'] = async (req, res) => {
@@ -23,16 +27,14 @@ export class GroupsController implements IGroupsController {
         }).then((user) => {
             res.send(user);
         }).catch((error) => {
-            let message = 'Unexpected error.';
+            this.logger.error(JSON.stringify(error));
 
-            if (error instanceof DataMappingError) {
-                message = error.message;
-            }
-
+            throw error;
+        }).catch(({ message }) => {
             res.status(400).send({
                 message,
             });
-        })
+        });
     }
 
     getGroup: IGroupsController['getGroup'] = async (req, res) => {
@@ -42,16 +44,10 @@ export class GroupsController implements IGroupsController {
             .then((group) => {
                 res.send(group);
             }).catch((error) => {
-                let message = 'Unexpected error.';
-
-                if (error instanceof DataMappingError) {
-                    message = error.message;
-                }
-
-                if (error instanceof UserDoesNotExist) {
-                    message = `User with { id: "${id}" } doesn't exist.`;
-                }
-
+                this.logger.error(JSON.stringify(error));
+    
+                throw error;
+            }).catch(({ message }) => {
                 res.status(400).send({
                     message,
                 });
@@ -68,16 +64,10 @@ export class GroupsController implements IGroupsController {
             .then((groups) => {
                 res.send(groups);
             }).catch((error) => {
-                let message = 'Unexpected error.';
+                this.logger.error(JSON.stringify(error));
     
-                if (error instanceof DataMappingError) {
-                    message = error.message;
-                }
-
-                if (error instanceof DataMappingError) {
-                    message = error.message;
-                }
-    
+                throw error;
+            }).catch(({ message }) => {
                 res.status(400).send({
                     message,
                 });
@@ -95,20 +85,14 @@ export class GroupsController implements IGroupsController {
             .then((...value) => {
                 res.send(value);
             }).catch((error) => {
-                let message = 'Unexpected error.';
-
-                if (error instanceof DataMappingError) {
-                    message = error.message;
-                }
-
-                if (error instanceof UserDoesNotExist) {
-                    message = `User with { id: "${id}" } doesn't exist.`;
-                }
-
+                this.logger.error(JSON.stringify(error));
+    
+                throw error;
+            }).catch(({ message }) => {
                 res.status(400).send({
                     message,
                 });
-            })
+            });
     }
 
     deleteGroup: IGroupsController['deleteGroup'] = (req, res) => {
@@ -118,16 +102,14 @@ export class GroupsController implements IGroupsController {
             .then(() => {
                 res.send();
             }).catch((error) => {
-                let message = 'Unexpected error.';
-
-                if (error instanceof UserDoesNotExist) {
-                    message = `User with { id: "${id}" } doesn't exist.`;
-                }
-
+                this.logger.error(JSON.stringify(error));
+    
+                throw error;
+            }).catch(({ message }) => {
                 res.status(400).send({
                     message,
                 });
-            })
+            });
     }
 
     addGroupUsers: IGroupsController['addGroupUsers'] = (req, res) => {
@@ -137,7 +119,13 @@ export class GroupsController implements IGroupsController {
         this.groupsService.addGroupUsers(groupId, usersIds).then(() => {
             res.send();
         }).catch((error) => {
-            res.send(error);
+            this.logger.error(JSON.stringify(error));
+
+            throw error;
+        }).catch(({ message }) => {
+            res.status(400).send({
+                message,
+            });
         });
     }
 
@@ -147,7 +135,13 @@ export class GroupsController implements IGroupsController {
         this.groupsService.getGroupUsers(groupId).then((users) => {
             res.send(users);
         }).catch((error) => {
-            res.send(error);
+            this.logger.error(JSON.stringify(error));
+
+            throw error;
+        }).catch(({ message }) => {
+            res.status(400).send({
+                message,
+            });
         });
     }
 }
