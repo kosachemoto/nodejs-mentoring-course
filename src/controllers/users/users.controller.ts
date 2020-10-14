@@ -3,8 +3,8 @@ import winston from 'winston';
 import { injectable, inject } from 'inversify';
 import { TYPE } from '@ioc/inversify.types';
 import { NUsersService } from '@services/users';
+import { errorLoggerFormat } from '@utils/.';
 import { IUsersController } from './users.controller.types';
-import { DataMappingError, UserDoesNotExist } from 'src/utils';
 
 import IUsersService = NUsersService.IUsersService;
 
@@ -27,7 +27,7 @@ export class UsersController implements IUsersController {
         }).then((user) => {
             res.send(user);
         }).catch((error) => {
-            this.logger.error(JSON.stringify(error));
+            this.logger.error(errorLoggerFormat(error));
 
             throw error;
         }).catch(({ message }) => {
@@ -44,7 +44,7 @@ export class UsersController implements IUsersController {
             .then((user) => {
                 res.send(user);
             }).catch((error) => {
-                this.logger.error(JSON.stringify(error));
+                this.logger.error(errorLoggerFormat(error));
 
                 throw error;
             }).catch(({ message }) => {
@@ -64,7 +64,7 @@ export class UsersController implements IUsersController {
             .then((users) => {
                 res.send(users);
             }).catch((error) => {
-                this.logger.error(JSON.stringify(error));
+                this.logger.error(errorLoggerFormat(error));
 
                 throw error;
             }).catch(({ message }) => {
@@ -85,7 +85,7 @@ export class UsersController implements IUsersController {
             .then((...value) => {
                 res.send(value);
             }).catch((error) => {
-                this.logger.error(JSON.stringify(error));
+                this.logger.error(errorLoggerFormat(error));
 
                 throw error;
             }).catch(({ message }) => {
@@ -102,7 +102,7 @@ export class UsersController implements IUsersController {
             .then(() => {
                 res.send();
             }).catch((error) => {
-                this.logger.error(JSON.stringify(error));
+                this.logger.error(errorLoggerFormat(error));
 
                 throw error;
             }).catch(({ message }) => {

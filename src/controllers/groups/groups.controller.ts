@@ -4,7 +4,7 @@ import winston from 'winston';
 import { TYPE } from '@ioc/inversify.types';
 import { IGroupsController } from './groups.controller.types';
 import { NGroupsService } from '@services/groups';
-import { DataMappingError, UserDoesNotExist } from 'src/utils';
+import { errorLoggerFormat } from '@utils/.';
 
 import IGroupsService = NGroupsService.IGroupsService;
 
@@ -27,7 +27,7 @@ export class GroupsController implements IGroupsController {
         }).then((user) => {
             res.send(user);
         }).catch((error) => {
-            this.logger.error(JSON.stringify(error));
+            this.logger.error(errorLoggerFormat(error));;
 
             throw error;
         }).catch(({ message }) => {
@@ -44,7 +44,7 @@ export class GroupsController implements IGroupsController {
             .then((group) => {
                 res.send(group);
             }).catch((error) => {
-                this.logger.error(JSON.stringify(error));
+                this.logger.error(errorLoggerFormat(error));;
     
                 throw error;
             }).catch(({ message }) => {
@@ -64,7 +64,7 @@ export class GroupsController implements IGroupsController {
             .then((groups) => {
                 res.send(groups);
             }).catch((error) => {
-                this.logger.error(JSON.stringify(error));
+                this.logger.error(errorLoggerFormat(error));;
     
                 throw error;
             }).catch(({ message }) => {
@@ -85,7 +85,7 @@ export class GroupsController implements IGroupsController {
             .then((...value) => {
                 res.send(value);
             }).catch((error) => {
-                this.logger.error(JSON.stringify(error));
+                this.logger.error(errorLoggerFormat(error));;
     
                 throw error;
             }).catch(({ message }) => {
@@ -102,7 +102,7 @@ export class GroupsController implements IGroupsController {
             .then(() => {
                 res.send();
             }).catch((error) => {
-                this.logger.error(JSON.stringify(error));
+                this.logger.error(errorLoggerFormat(error));;
     
                 throw error;
             }).catch(({ message }) => {
@@ -119,7 +119,7 @@ export class GroupsController implements IGroupsController {
         this.groupsService.addGroupUsers(groupId, usersIds).then(() => {
             res.send();
         }).catch((error) => {
-            this.logger.error(JSON.stringify(error));
+            this.logger.error(errorLoggerFormat(error));;
 
             throw error;
         }).catch(({ message }) => {
@@ -135,7 +135,7 @@ export class GroupsController implements IGroupsController {
         this.groupsService.getGroupUsers(groupId).then((users) => {
             res.send(users);
         }).catch((error) => {
-            this.logger.error(JSON.stringify(error));
+            this.logger.error(errorLoggerFormat(error));;
 
             throw error;
         }).catch(({ message }) => {

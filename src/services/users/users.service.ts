@@ -5,11 +5,9 @@ import { TYPE } from '@ioc/inversify.types';
 import { NUserDataMapper } from '@data-mappers/user';
 import { NUsersDAL } from '@dal/users';
 import { UserDoesNotExist } from 'src/utils';
-import { NUserDAL, UserDAL } from '@models/user';
 
 import IUserDataMapper = NUserDataMapper.IUserDataMapper;
 import IUsersDAL = NUsersDAL.IUsersDAL;
-import { container } from '@ioc/inversify.config';
 
 @injectable()
 export class UsersService implements IUsersService {
