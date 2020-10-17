@@ -13,14 +13,17 @@ export const TYPE = {
         USER: Symbol(),
     },
     CONTROLLER: {
+        APPLICATION: Symbol(),
         USER: Symbol(),
         GROUP: Symbol(),
     },
     VALIDATION: {
         RULES: {
+            APPLICATION: Symbol(),
             USER: Symbol(),
         },
         SCHEMA: {
+            APPLICATION: Symbol(),
             USER: Symbol(),
         },
     },
@@ -41,6 +44,7 @@ export const TYPE = {
         USER: Symbol(),
     },
     SERVICE: {
+        APPLICATION: Symbol(),
         USERS: Symbol(),
         GROUPS: Symbol(),
     },
