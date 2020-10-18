@@ -34,6 +34,10 @@ export class UserDAL {
                 type: dataTypes.BOOLEAN,
                 allowNull: false,
                 defaultValue: false,
+            },
+            refreshToken: {
+                type: dataTypes.TEXT,
+                defaultValue: null
             }
         }, {
             timestamps: false,

@@ -6,6 +6,7 @@ export interface IUserDALAttributes {
     password: string;
     age: number;
     isDeleted: boolean;
+    refreshToken: string;
 }
 
 export type TUserDALCreationAttributes = Pick<IUserDALAttributes, 'login' | 'password' | 'age'>
