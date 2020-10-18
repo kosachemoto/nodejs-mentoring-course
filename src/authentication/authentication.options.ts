@@ -7,15 +7,11 @@ dotenv.config();
 const {
     ACCESS_TOKEN_SECRET,
     ACCESS_TOKEN_LIFE,
-    REFRESH_TOKEN_SECRET,
-    REFRESH_TOKEN_LIFE,
 } = process.env;
 
 export const rawOptions = {
     ACCESS_TOKEN_SECRET,
     ACCESS_TOKEN_LIFE: ACCESS_TOKEN_LIFE ? +ACCESS_TOKEN_LIFE : undefined,
-    REFRESH_TOKEN_SECRET,
-    REFRESH_TOKEN_LIFE: REFRESH_TOKEN_LIFE ? +REFRESH_TOKEN_LIFE : undefined,
 };
 
 export const options = (Object.keys(rawOptions) as TOptionsKeys[]).reduce((options, key) => {

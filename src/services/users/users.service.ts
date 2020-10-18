@@ -92,24 +92,4 @@ export class UsersService implements IUsersService {
         return this.usersDAL.deleteUser(id)
             .then(([ status ]) => status);
     }
-
-    getRefreshToken: IUsersService['getRefreshToken'] = async (id) => {
-        return this.usersDAL.getUser.byId(id).then(([ user ]) => user.refreshToken);
-    }
-
-    updateRefreshToken: IUsersService['updateRefreshToken'] = async (data) => {
-        return this.usersDAL.updateRefreshToken(data).then(([ status ]) => {
-            if (!status) {
-                throw new UserDoesNotExist('');
-            }
-
-            return this.usersDAL.getUser.byId(data.id);
-        }).then(([ user ]) => {
-            if (!user) {
-                throw new UserDoesNotExist('');
-            }
-
-            return user;
-        });
-    }
 }

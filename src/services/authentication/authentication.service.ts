@@ -24,28 +24,10 @@ export class AuthenticationService implements IAuthenticationService {
         return this.usersService.getUser.byCredentials(login, password).then(({ id }) => (
             id
         )).then((id) => {
-            const accessToken = jwt.sign(
+            return jwt.sign(
                 { id },
                 this.options.ACCESS_TOKEN_SECRET,
                 { algorithm: "HS256", expiresIn: this.options.ACCESS_TOKEN_LIFE });
-
-            const refreshToken = jwt.sign(
-                { id },
-                this.options.REFRESH_TOKEN_SECRET,
-                { algorithm: "HS256", expiresIn: this.options.REFRESH_TOKEN_LIFE });
-
-            return {
-                id,
-                accessToken,
-                refreshToken,
-            };
-        }).then(({ id, accessToken, refreshToken }) => {
-            this.usersService.updateRefreshToken({
-                id,
-                refreshToken,
-            });
-
-            return accessToken;
         });
     }
 }

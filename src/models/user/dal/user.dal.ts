@@ -35,10 +35,6 @@ export class UserDAL {
                 allowNull: false,
                 defaultValue: false,
             },
-            refreshToken: {
-                type: dataTypes.TEXT,
-                defaultValue: null
-            }
         }, {
             timestamps: false,
         });

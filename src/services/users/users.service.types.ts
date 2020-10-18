@@ -15,7 +15,6 @@ export type TUserCreationData = TUserDALCreationAttributes;
 export type TUserUpdateData = TUserUpdateAttributes;
 export type TGetUserById = (id: string) => Promise<IUserDTO>;
 export type TGetUserByCredentials = (login: string, password: string) => Promise<IUserDTO>;
-export type TUpdateRefreshToken = NUsersDAL.TUpdateRefreshToken;
 
 export interface IUsersService {
     usersDAL: IUsersDAL;
@@ -29,8 +28,6 @@ export interface IUsersService {
     getUsers: (loginSubstring?: string, limit?: number) => Promise<IUserDTO[]>;
     updateUser: (data: TUserUpdateData) => Promise<IUserDTO>;
     deleteUser: (id: string) => Promise<number>;
-    getRefreshToken: (id: string) => Promise<string>;
-    updateRefreshToken: (data: TUpdateRefreshToken) => Promise<IUserDTO>;
 }
 
 export interface IUsersServiceConstructor {

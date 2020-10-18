@@ -25,12 +25,6 @@ export class UserDoesNotExist extends CustomError {
     }
 }
 
-export class RefreshTokenDoesNotExist extends CustomError {
-    constructor(message: string = '') {
-        super(message);
-    }
-}
-
 export class UndefinedTokenLife extends CustomError {
     constructor(message: string = '') {
         super(message);

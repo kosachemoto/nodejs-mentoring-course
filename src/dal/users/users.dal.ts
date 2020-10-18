@@ -60,13 +60,4 @@ export class UsersDAL implements IUsersDAL {
             }
         }) as Promise<[number, TUserDAL[]]>;
     }
-
-    updateRefreshToken: IUsersDAL['updateRefreshToken'] = async (data) => {
-        return this.userModel.update(data, {
-            fields: ['refreshToken'],
-            where: {
-                id: data.id
-            }
-        }) as Promise<[number, TUserDAL[]]>;
-    }
 }
