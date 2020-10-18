@@ -1,17 +1,44 @@
-export class DataMappingError extends Error {
-    constructor(message: string = 'DataMappingError') {
+export abstract class CustomError extends Error {
+    constructor(message: string = '') {
         super(message);
-        
-        this.name = 'DataMappingError';
-        Error.captureStackTrace(this, DataMappingError);
+
+        this.name = this.constructor.name;
+        Error.captureStackTrace(this, this.constructor);
     }
 }
 
-export class UserDoesNotExist extends Error {
-    constructor(message: string = 'UserDoesNotExist') {
+export class DataMappingError extends CustomError {
+    constructor(message: string = '') {
         super(message);
+    }
+}
 
-        this.name = 'UserDoesNotExist';
-        Error.captureStackTrace(this, UserDoesNotExist);
+export class AccessTokenDoesNotExist extends CustomError {
+    constructor(message: string = '') {
+        super(message);
+    }
+}
+
+export class UserDoesNotExist extends CustomError {
+    constructor(message: string = '') {
+        super(message);
+    }
+}
+
+export class RefreshTokenDoesNotExist extends CustomError {
+    constructor(message: string = '') {
+        super(message);
+    }
+}
+
+export class UndefinedTokenLife extends CustomError {
+    constructor(message: string = '') {
+        super(message);
+    }
+}
+
+export class UndefinedEnvValue extends CustomError {
+    constructor(message: string = '') {
+        super(message);
     }
 }
