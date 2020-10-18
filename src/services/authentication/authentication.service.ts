@@ -48,35 +48,4 @@ export class AuthenticationService implements IAuthenticationService {
             return accessToken;
         });
     }
-
-    refresh: IAuthenticationService['refresh'] = async (accessToken) => {
-        if (!accessToken) {
-            throw new AccessTokenDoesNotExist();
-        }
-        
-        const id = await Promise.resolve().then(() => (
-            jwt.verify(accessToken, this.options.ACCESS_TOKEN_SECRET) as { id: string }
-        )).then(({ id }) => (
-            id
-        ));
-
-        const refreshToken = await this.usersService.getRefreshToken(id);
-
-        await Promise.resolve().then(() => {
-            jwt.verify(refreshToken, this.options.REFRESH_TOKEN_SECRET);
-        });
-
-        const newAccessToken = jwt.sign(
-            {
-                id
-            },
-            this.options.ACCESS_TOKEN_SECRET,
-            {
-                algorithm: "HS256",
-                expiresIn: this.options.ACCESS_TOKEN_LIFE,
-            }
-        );
-
-        return newAccessToken;
-    }
 }

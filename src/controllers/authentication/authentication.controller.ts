@@ -34,19 +34,4 @@ export class AuthenticationController implements IAuthenticationController {
             res.status(401).send(error);
         });
     }
-
-    refresh: IAuthenticationController['refresh'] = async (req, res) => {
-        const accessToken = req ? (req.cookies ? req.cookies.jwt : null) : null;
-
-        return this.applicationService.refresh(accessToken).then((newAccessToken) => {
-            res.cookie(
-                "jwt",
-                newAccessToken,
-                { httpOnly: true, expires: new Date(Date.now() + this.options.ACCESS_TOKEN_LIFE) });
-        }).then(() => {
-            res.send();
-        }).catch((error) => {
-            res.status(401).send(error);
-        });
-    }
 }

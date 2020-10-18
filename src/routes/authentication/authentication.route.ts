@@ -14,7 +14,4 @@ authenticationRouter.route('/login')
         authenticationRules.login,
         authenticationController.login);
 
-        authenticationRouter.route('/refresh')
-    .get(authenticationController.refresh);
-
 export { authenticationRouter };
