@@ -1,4 +1,7 @@
 export const TYPE = {
+    AUTHENTICATION: {
+        OPTIONS: Symbol(),
+    },
     APPLICATION: {
         MODE: Symbol(),
     },
