@@ -1,1 +1,0 @@
-export { applicationRouter } from './application.route';

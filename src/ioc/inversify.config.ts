@@ -22,16 +22,16 @@ import {
 import { UserDataMapper } from '@data-mappers/user';
 import { UsersDAL } from '@dal/users';
 import { GroupsDAL } from '@dal/groups';
-import { ApplicationService } from '@services/application';
+import { AuthenticationService } from '@services/authentication';
 import { UsersService } from '@services/users';
 import { GroupsService } from '@services/groups';
-import { ApplicationController } from '@controllers/application';
+import { AuthenticationController } from '@controllers/authentication';
 import { UsersController } from '@controllers/users';
 import { GroupsController } from '@controllers/groups';
 import {
-    ApplicationRules,
-    ApplicationSchema,
-} from 'src/validation/application';
+    AuthenticationRules,
+    AuthenticationSchema,
+} from 'src/validation/authentication';
 import { 
     UsersRules,
     UsersSchema,
@@ -74,15 +74,15 @@ container.bind(TYPE.DATA_MAPPER.USER).to(UserDataMapper).inSingletonScope();
 container.bind(TYPE.DAL.USERS).to(UsersDAL).inSingletonScope();
 container.bind(TYPE.DAL.GROUPS).to(GroupsDAL).inSingletonScope();
 
-container.bind(TYPE.SERVICE.APPLICATION).to(ApplicationService).inSingletonScope();
+container.bind(TYPE.SERVICE.AUTHENTICATION).to(AuthenticationService).inSingletonScope();
 container.bind(TYPE.SERVICE.USERS).to(UsersService).inSingletonScope();
 container.bind(TYPE.SERVICE.GROUPS).to(GroupsService).inSingletonScope();
 
-container.bind(TYPE.CONTROLLER.APPLICATION).to(ApplicationController).inSingletonScope();
+container.bind(TYPE.CONTROLLER.AUTHENTICATION).to(AuthenticationController).inSingletonScope();
 container.bind(TYPE.CONTROLLER.USER).to(UsersController).inSingletonScope();
 container.bind(TYPE.CONTROLLER.GROUP).to(GroupsController).inSingletonScope();
 
-container.bind(TYPE.VALIDATION.SCHEMA.APPLICATION).to(ApplicationSchema).inSingletonScope();
-container.bind(TYPE.VALIDATION.RULES.APPLICATION).to(ApplicationRules).inSingletonScope();
+container.bind(TYPE.VALIDATION.SCHEMA.AUTHENTICATION).to(AuthenticationSchema).inSingletonScope();
+container.bind(TYPE.VALIDATION.RULES.AUTHENTICATION).to(AuthenticationRules).inSingletonScope();
 container.bind(TYPE.VALIDATION.SCHEMA.USER).to(UsersSchema).inSingletonScope();
 container.bind(TYPE.VALIDATION.RULES.USER).to(UsersRules).inSingletonScope();

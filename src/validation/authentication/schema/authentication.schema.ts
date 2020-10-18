@@ -1,10 +1,10 @@
 import "reflect-metadata";
 import { injectable } from 'inversify';
 import Joi from 'joi';
-import { IApplicationSchema } from './application.schema.types';
+import { IAuthenticationSchema } from './authentication.schema.types';
 
 @injectable()
-export class ApplicationSchema implements IApplicationSchema {
+export class AuthenticationSchema implements IAuthenticationSchema {
     login = Joi.object().keys({
         login: Joi.required(),
         password: Joi.required(),

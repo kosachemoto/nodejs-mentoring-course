@@ -1,14 +1,14 @@
 import "reflect-metadata";
 import jwt from 'jsonwebtoken';
 import { injectable, inject } from 'inversify';
-import { IApplicationService } from './application.service.types';
+import { IAuthenticationService } from './authentication.service.types';
 import { TYPE } from '@ioc/inversify.types';
 import { NUsersService } from '@services/users';
 import { AccessTokenDoesNotExist } from "@utils/custom-errors";
 import { NAuthentication } from 'src/authentication';
 
 @injectable()
-export class ApplicationService implements IApplicationService {
+export class AuthenticationService implements IAuthenticationService {
     usersService: NUsersService.IUsersService;
     options: NAuthentication.TOptions;
 
@@ -20,7 +20,7 @@ export class ApplicationService implements IApplicationService {
         this.options = options;
     }
 
-    login: IApplicationService['login'] = async (login, password) => {
+    login: IAuthenticationService['login'] = async (login, password) => {
         return this.usersService.getUser.byCredentials(login, password).then(({ id }) => (
             id
         )).then((id) => {
@@ -49,7 +49,7 @@ export class ApplicationService implements IApplicationService {
         });
     }
 
-    refresh: IApplicationService['refresh'] = async (accessToken) => {
+    refresh: IAuthenticationService['refresh'] = async (accessToken) => {
         if (!accessToken) {
             throw new AccessTokenDoesNotExist();
         }

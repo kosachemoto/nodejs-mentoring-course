@@ -6,7 +6,7 @@ export type TLoginData = {
     password: string;
 }
 
-export interface IApplicationController {
+export interface IAuthenticationController {
     login: (req: Request<Record<string, unknown>, Record<string, unknown>, TLoginData>, res: Response, next: NextFunction) => void;
     refresh: (req: Request, res: Response, next: NextFunction) => void;
 }

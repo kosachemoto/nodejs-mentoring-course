@@ -11,6 +11,7 @@ const usersRouter = express.Router();
 
 const usersController = container.get<IUsersController>(TYPE.CONTROLLER.USER);
 const usersValidation = container.get<IUsersRules>(TYPE.VALIDATION.RULES.USER);
+const authenticationValidation = container.get<any>(TYPE.VALIDATION.RULES.AUTHENTICATION);
 
 usersRouter.route('/')
     .post(

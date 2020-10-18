@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { Command } from 'commander';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import { applicationRouter, usersRouter, groupsRoute } from '@routes/.';
+import { authenticationRouter, usersRouter, groupsRoute } from '@routes/.';
 import { container } from '@ioc/inversify.config';
 import { TYPE } from '@ioc/inversify.types';
 import { NMorganTypes } from 'src/logger/morgan';
@@ -41,7 +41,7 @@ app.use(bodyParser.json());
 app.use(reqLogger);
 app.use(resLogger);
 
-app.use('/', applicationRouter);
+app.use('/', authenticationRouter);
 app.use('/users', usersRouter);
 app.use('/groups', groupsRoute);
 

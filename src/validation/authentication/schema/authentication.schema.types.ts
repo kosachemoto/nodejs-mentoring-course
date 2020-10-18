@@ -1,5 +1,5 @@
 import Joi from 'joi';
 
-export interface IApplicationSchema {
+export interface IAuthenticationSchema {
     login: Joi.ObjectSchema;
 }
