@@ -14,4 +14,7 @@ applicationRouter.route('/login')
         applicationRules.login,
         applicationController.login);
 
+applicationRouter.route('/refresh')
+    .get(applicationController.refresh);
+
 export { applicationRouter };
