@@ -1,61 +1,27 @@
 import winston from 'winston';
 import { Container } from 'inversify';
-import { UsersService, NUsersService } from 'src/services/users';
+import { NUsersService } from 'src/services/users';
 import { UsersController } from './users.controller';
 import { TYPE } from '@ioc/inversify.types';
 import { NUsersController } from '.';
 
 jest.mock('src/services/users');
 
-const mockedPromise = {
-    then: function() {
-        return this;
-    },
-    catch: function() {
-        return this;
-    },
-};
-
-const mocked = {
-    userService: ({
-        createUser: jest.fn(() => mockedPromise),
-        getUser: {
-            byId: jest.fn(() => mockedPromise),
-        },
-        getUsers: jest.fn(() => mockedPromise),
-        updateUser: jest.fn(() => mockedPromise),
-        deleteUser: jest.fn(() => mockedPromise),
-    } as any) as NUsersService.IUsersService,
-    logger: (jest.fn() as any) as winston.Logger,
-}
+const mockedLogger = (jest.fn() as any) as winston.Logger;
 
 export const container = new Container({
     skipBaseClassChecks: true,
 });
 
-container.bind(TYPE.SERVICE.USERS).toConstantValue(mocked.userService);
-container.bind(TYPE.WINSTON.LOGGER).toConstantValue(mocked.logger);
+container.bind(TYPE.SERVICE.USERS).toConstantValue(undefined);
+container.bind(TYPE.WINSTON.LOGGER).toConstantValue(mockedLogger);
 container.bind(TYPE.CONTROLLER.USER).to(UsersController).inSingletonScope();
 
-describe('usersController', () => {
+describe('UsersController', () => {
     let send: any;
     let req: any;
     let res: any;
     let next: any;
-
-    const testReq = {
-        params: {
-            id: "1234",
-        },
-        query: {
-            loginSubstring: "logi",
-            limit: 1,
-        },
-    } as any;
-    const testRes = {
-        send: jest.fn(),
-    } as any;
-    const testNext = jest.fn() as any;
 
     describe('createUser', () => {
         beforeEach(() => {
