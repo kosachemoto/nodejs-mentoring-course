@@ -82,8 +82,8 @@ export class UsersController implements IUsersController {
         }
 
         this.usersService.updateUser(updateData)
-            .then((...value) => {
-                res.send(value);
+            .then((user) => {
+                res.send(user);
             }).catch((error) => {
                 this.logger.error(errorLoggerFormat(error));
 

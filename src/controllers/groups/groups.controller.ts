@@ -82,8 +82,8 @@ export class GroupsController implements IGroupsController {
         }
 
         this.groupsService.updateGroup(updateData)
-            .then((...value) => {
-                res.send(value);
+            .then((group) => {
+                res.send(group);
             }).catch((error) => {
                 this.logger.error(errorLoggerFormat(error));;
     
