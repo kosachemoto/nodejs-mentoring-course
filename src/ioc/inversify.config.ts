@@ -3,6 +3,9 @@ import { Container } from 'inversify';
 import { TYPE } from './inversify.types';
 
 import { DataTypes } from 'sequelize';
+import { applicationMode } from 'src/commander';
+import { WinstonLogger, WinstonStream } from 'src/logger/winston';
+import { MorganLogger } from 'src/logger/morgan';
 import { options, OverloadedSequelize } from 'src/orm';
 import {
     UserDAL,
@@ -33,6 +36,11 @@ import IGroupDAL = NGroupDAL.IGroupDAL;
 export const container = new Container({
     skipBaseClassChecks: true,
 });
+
+container.bind(TYPE.APPLICATION.MODE).toConstantValue(applicationMode);
+container.bind(TYPE.WINSTON.LOGGER).to(WinstonLogger).inSingletonScope();
+container.bind(TYPE.WINSTON.STREAM).to(WinstonStream).inSingletonScope();
+container.bind(TYPE.MORGAN.LOGGER).to(MorganLogger).inSingletonScope();
 
 container.bind(TYPE.ORM.DB_OPTIONS).toConstantValue(options);
 container.bind(TYPE.ORM.DATA_TYPES).toConstantValue(DataTypes);

@@ -6,10 +6,12 @@
   "author": "Nikita Kosachev",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon"
+    "start": "node --inspect=5858 -r ts-node/register -r tsconfig-paths/register ./index.ts",
+    "watch": "nodemon"
   },
   "devDependencies": {
     "@types/express": "^4.17.8",
+    "@types/morgan": "^1.9.1",
     "@types/node": "^14.6.4",
     "@types/pg": "^7.14.4",
     "@types/uuid": "^8.3.0",
@@ -23,16 +25,19 @@
   },
   "dependencies": {
     "body-parser": "^1.19.0",
+    "commander": "^6.1.0",
     "csvtojson": "^2.0.10",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "inversify": "^5.0.1",
     "inversify-inject-decorators": "^3.1.0",
     "joi": "^17.2.1",
+    "morgan": "^1.10.0",
     "pg": "^8.3.3",
     "pg-hstore": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.3.5",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "winston": "^3.3.3"
   }
 }

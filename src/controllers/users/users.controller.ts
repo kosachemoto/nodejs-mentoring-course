@@ -1,20 +1,24 @@
 import 'reflect-metadata';
+import winston from 'winston';
 import { injectable, inject } from 'inversify';
 import { TYPE } from '@ioc/inversify.types';
 import { NUsersService } from '@services/users';
+import { errorLoggerFormat } from '@utils/.';
 import { IUsersController } from './users.controller.types';
-import { DataMappingError, UserDoesNotExist } from 'src/utils';
 
 import IUsersService = NUsersService.IUsersService;
 
 @injectable()
 export class UsersController implements IUsersController {
     usersService: IUsersService;
+    logger: winston.Logger;
 
     constructor(
         @inject(TYPE.SERVICE.USERS) usersService: IUsersService,
+        @inject(TYPE.WINSTON.LOGGER) logger: winston.Logger,
     ) {
         this.usersService = usersService;
+        this.logger = logger;
     }
 
     createUser: IUsersController['createUser'] = async (req, res) => {
@@ -23,16 +27,14 @@ export class UsersController implements IUsersController {
         }).then((user) => {
             res.send(user);
         }).catch((error) => {
-            let message = 'Unexpected error.';
+            this.logger.error(errorLoggerFormat(error));
 
-            if (error instanceof DataMappingError) {
-                message = error.message;
-            }
-
+            throw error;
+        }).catch(({ message }) => {
             res.status(400).send({
                 message,
             });
-        })
+        });
     }
 
     getUser: IUsersController['getUser'] = async (req, res) => {
@@ -42,20 +44,14 @@ export class UsersController implements IUsersController {
             .then((user) => {
                 res.send(user);
             }).catch((error) => {
-                let message = 'Unexpected error.';
+                this.logger.error(errorLoggerFormat(error));
 
-                if (error instanceof DataMappingError) {
-                    message = error.message;
-                }
-
-                if (error instanceof UserDoesNotExist) {
-                    message = `User with { id: "${id}" } doesn't exist.`;
-                }
-
+                throw error;
+            }).catch(({ message }) => {
                 res.status(400).send({
                     message,
                 });
-            });
+            })
     }
 
     getUsers: IUsersController['getUsers'] = async (req, res) => {
@@ -68,16 +64,10 @@ export class UsersController implements IUsersController {
             .then((users) => {
                 res.send(users);
             }).catch((error) => {
-                let message = 'Unexpected error.';
-    
-                if (error instanceof DataMappingError) {
-                    message = error.message;
-                }
+                this.logger.error(errorLoggerFormat(error));
 
-                if (error instanceof DataMappingError) {
-                    message = error.message;
-                }
-    
+                throw error;
+            }).catch(({ message }) => {
                 res.status(400).send({
                     message,
                 });
@@ -95,20 +85,14 @@ export class UsersController implements IUsersController {
             .then((...value) => {
                 res.send(value);
             }).catch((error) => {
-                let message = 'Unexpected error.';
+                this.logger.error(errorLoggerFormat(error));
 
-                if (error instanceof DataMappingError) {
-                    message = error.message;
-                }
-
-                if (error instanceof UserDoesNotExist) {
-                    message = `User with { id: "${id}" } doesn't exist.`;
-                }
-
+                throw error;
+            }).catch(({ message }) => {
                 res.status(400).send({
                     message,
                 });
-            })
+            });
     }
 
     deleteUser: IUsersController['deleteUser'] = (req, res) => {
@@ -118,15 +102,13 @@ export class UsersController implements IUsersController {
             .then(() => {
                 res.send();
             }).catch((error) => {
-                let message = 'Unexpected error.';
+                this.logger.error(errorLoggerFormat(error));
 
-                if (error instanceof UserDoesNotExist) {
-                    message = `User with { id: "${id}" } doesn't exist.`;
-                }
-
+                throw error;
+            }).catch(({ message }) => {
                 res.status(400).send({
                     message,
                 });
-            })
+            });
     }
 }
