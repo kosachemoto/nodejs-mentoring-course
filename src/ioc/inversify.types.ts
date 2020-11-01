@@ -1,4 +1,7 @@
 export const TYPE = {
+    AUTHENTICATION: {
+        OPTIONS: Symbol(),
+    },
     APPLICATION: {
         MODE: Symbol(),
     },
@@ -13,14 +16,17 @@ export const TYPE = {
         USER: Symbol(),
     },
     CONTROLLER: {
+        AUTHENTICATION: Symbol(),
         USER: Symbol(),
         GROUP: Symbol(),
     },
     VALIDATION: {
         RULES: {
+            AUTHENTICATION: Symbol(),
             USER: Symbol(),
         },
         SCHEMA: {
+            AUTHENTICATION: Symbol(),
             USER: Symbol(),
         },
     },
@@ -41,6 +47,7 @@ export const TYPE = {
         USER: Symbol(),
     },
     SERVICE: {
+        AUTHENTICATION: Symbol(),
         USERS: Symbol(),
         GROUPS: Symbol(),
     },

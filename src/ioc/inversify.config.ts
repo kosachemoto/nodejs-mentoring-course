@@ -3,6 +3,7 @@ import { Container } from 'inversify';
 import { TYPE } from './inversify.types';
 
 import { DataTypes } from 'sequelize';
+import * as Authentication from 'src/authentication';
 import { applicationMode } from 'src/commander';
 import { WinstonLogger, WinstonStream } from 'src/logger/winston';
 import { MorganLogger } from 'src/logger/morgan';
@@ -21,10 +22,16 @@ import {
 import { UserDataMapper } from '@data-mappers/user';
 import { UsersDAL } from '@dal/users';
 import { GroupsDAL } from '@dal/groups';
+import { AuthenticationService } from '@services/authentication';
 import { UsersService } from '@services/users';
 import { GroupsService } from '@services/groups';
+import { AuthenticationController } from '@controllers/authentication';
 import { UsersController } from '@controllers/users';
 import { GroupsController } from '@controllers/groups';
+import {
+    AuthenticationRules,
+    AuthenticationSchema,
+} from 'src/validation/authentication';
 import { 
     UsersRules,
     UsersSchema,
@@ -36,6 +43,8 @@ import IGroupDAL = NGroupDAL.IGroupDAL;
 export const container = new Container({
     skipBaseClassChecks: true,
 });
+
+container.bind(TYPE.AUTHENTICATION.OPTIONS).toConstantValue(Authentication.options);
 
 container.bind(TYPE.APPLICATION.MODE).toConstantValue(applicationMode);
 container.bind(TYPE.WINSTON.LOGGER).to(WinstonLogger).inSingletonScope();
@@ -65,11 +74,15 @@ container.bind(TYPE.DATA_MAPPER.USER).to(UserDataMapper).inSingletonScope();
 container.bind(TYPE.DAL.USERS).to(UsersDAL).inSingletonScope();
 container.bind(TYPE.DAL.GROUPS).to(GroupsDAL).inSingletonScope();
 
+container.bind(TYPE.SERVICE.AUTHENTICATION).to(AuthenticationService).inSingletonScope();
 container.bind(TYPE.SERVICE.USERS).to(UsersService).inSingletonScope();
 container.bind(TYPE.SERVICE.GROUPS).to(GroupsService).inSingletonScope();
 
+container.bind(TYPE.CONTROLLER.AUTHENTICATION).to(AuthenticationController).inSingletonScope();
 container.bind(TYPE.CONTROLLER.USER).to(UsersController).inSingletonScope();
 container.bind(TYPE.CONTROLLER.GROUP).to(GroupsController).inSingletonScope();
 
+container.bind(TYPE.VALIDATION.SCHEMA.AUTHENTICATION).to(AuthenticationSchema).inSingletonScope();
+container.bind(TYPE.VALIDATION.RULES.AUTHENTICATION).to(AuthenticationRules).inSingletonScope();
 container.bind(TYPE.VALIDATION.SCHEMA.USER).to(UsersSchema).inSingletonScope();
 container.bind(TYPE.VALIDATION.RULES.USER).to(UsersRules).inSingletonScope();

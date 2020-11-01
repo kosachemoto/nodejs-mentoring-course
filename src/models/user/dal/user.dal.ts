@@ -34,7 +34,7 @@ export class UserDAL {
                 type: dataTypes.BOOLEAN,
                 allowNull: false,
                 defaultValue: false,
-            }
+            },
         }, {
             timestamps: false,
         });

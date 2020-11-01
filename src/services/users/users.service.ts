@@ -30,12 +30,25 @@ export class UsersService implements IUsersService {
         })
     }
 
-    getUser: IUsersService['getUser'] = async (id) => {
-        return this.usersDAL.getUser(id).then(([ user ]) => (
-            this.userDataMapper.toDTO(user)
-        )).catch((error) => {
-            throw error;
-        });
+    getUser: IUsersService['getUser'] = {
+        byId: async (id) => (
+            this.usersDAL.getUser.byId(id).then(([ user ]) => (
+                this.userDataMapper.toDTO(user)
+            )).catch((error) => {
+                throw error;
+            })
+        ),
+        byCredentials: async (login, password) => (
+            this.usersDAL.getUser.byCredentials(login, password).then(([ user ]) => {
+                if (!user) {
+                    throw new UserDoesNotExist('User with such credentials does not exist.')
+                }
+                
+                return this.userDataMapper.toDTO(user);
+            }).catch((error) => {
+                throw error;
+            })
+        ),
     }
 
     getUsers: IUsersService['getUsers'] = async (loginSubstring, limit) => {
@@ -58,13 +71,13 @@ export class UsersService implements IUsersService {
 
         return this.usersDAL.updateUser(data).then(([ status ]) => {
                 if (!status) {
-                    throw new UserDoesNotExist();
+                    throw new UserDoesNotExist('');
                 }
 
-                return this.usersDAL.getUser(id)
+                return this.usersDAL.getUser.byId(id)
             }).then(([ user ]) => {
                 if (!user) {
-                    throw new UserDoesNotExist();
+                    throw new UserDoesNotExist('');
                 }
 
                 return user;

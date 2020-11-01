@@ -12,15 +12,19 @@ import TUserDALCreationAttributes = NUserDAL.TUserDALCreationAttributes;
 import IUserDTO = NUserDTO.IUserDTO;
 
 export type TUserCreationData = TUserDALCreationAttributes;
-
 export type TUserUpdateData = TUserUpdateAttributes;
+export type TGetUserById = (id: string) => Promise<IUserDTO>;
+export type TGetUserByCredentials = (login: string, password: string) => Promise<IUserDTO>;
 
 export interface IUsersService {
     usersDAL: IUsersDAL;
     userDataMapper: IUserDataMapper;
 
     createUser: (data: TUserCreationData) => Promise<IUserDTO>;
-    getUser: (id: string) => Promise<IUserDTO>;
+    getUser: {
+        byId: TGetUserById;
+        byCredentials: TGetUserByCredentials;
+    };
     getUsers: (loginSubstring?: string, limit?: number) => Promise<IUserDTO[]>;
     updateUser: (data: TUserUpdateData) => Promise<IUserDTO>;
     deleteUser: (id: string) => Promise<number>;

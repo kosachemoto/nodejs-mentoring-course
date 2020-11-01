@@ -40,7 +40,7 @@ export class UsersController implements IUsersController {
     getUser: IUsersController['getUser'] = async (req, res) => {
         const id = req.params.id || '';
 
-        this.usersService.getUser(id)
+        this.usersService.getUser.byId(id)
             .then((user) => {
                 res.send(user);
             }).catch((error) => {
